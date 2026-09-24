@@ -1,0 +1,10 @@
+{
+  "name": "laya-scraper",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Real-browser renderer for laya-scraper (puppeteer-real-browser, multi-tab)",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer-real-browser": "^1.4.4"
+  }
+}
