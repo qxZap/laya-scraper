@@ -1,0 +1,82 @@
+laya on cuda: NVIDIA GeForce RTX 4080 SUPER
+stage 1: finding the list ...
+[  1] 0.36 hub=0.36 hub     events        items= 41 requests https://www.chathamhouse.org/
+  site bot-walls plain requests -> browser from now on
+[  2] 0.88 hub=0.88 item    publications  items= 19 browser  https://www.chathamhouse.org/publications/the-world-today/2026-09
+[  3] 0.26 hub=0.92 listing publications  items=  1 browser  https://www.chathamhouse.org/publications
+[  4] 0.38 hub=0.38 listing publications  items= 52 browser  https://www.chathamhouse.org/regions/russia-and-eurasia
+[  5] 0.51 hub=0.51 listing news          items= 55 browser  https://www.chathamhouse.org/regions/asia-pacific
+[  6] 0.50 hub=0.50 listing organisation  items= 13 browser  https://www.chathamhouse.org/about-us/our-departments
+[  7] 0.59 hub=0.59 info    organisation  items= 12 browser  https://www.chathamhouse.org/about-us
+[  8] 0.46 hub=0.46 listing publications  items= 51 browser  https://www.chathamhouse.org/regions/middle-east-and-north-africa
+[  9] 0.25 hub=0.25 listing news          items= 57 browser  https://www.chathamhouse.org/regions/americas
+[ 10] 0.86 hub=0.86 listing publications  items= 22 browser  https://www.chathamhouse.org/publications/the-world-today/2026-06
+[ 11] 0.91 hub=0.91 listing publications  items= 24 browser  https://www.chathamhouse.org/publications/the-world-today/2026-03
+[ 12] 0.39 hub=0.39 hub     publications  items= 80 browser  https://www.chathamhouse.org/regions/africa
+[ 13] 0.26 hub=0.92 item    publications  items=  1 browser  https://www.chathamhouse.org/publications/the-world-today/2026-06/fifth-food-mega-shock-20-years-how-stop-these-crises-good
+[ 14] 0.26 hub=0.93 item    publications  items=  1 browser  https://www.chathamhouse.org/publications/the-world-today/2026-06/were-just-trying-earn-enough-buy-rice-living-through-energy
+[ 15] 0.25 hub=0.90 listing publications  items=  1 browser  https://www.chathamhouse.org/publications/the-world-today/2026-03/can-npt-review-conference-stop-new-nuclear-arms-race
+[ 16] 0.26 hub=0.93 listing publications  items=  1 browser  https://www.chathamhouse.org/publications/the-world-today/2026-06/maritime-chokepoints-could-be-worse-hormuz
+[ 17] 0.26 hub=0.93 item    publications  items=  1 browser  https://www.chathamhouse.org/publications/the-world-today/2026-06/can-ukraine-exploit-its-drone-diplomacy-become-global-security
+[ 18] 0.26 hub=0.26 hub     events        items= 11 browser  https://www.chathamhouse.org/members-and-partners
+[ 19] 0.03 hub=0.07 listing organisation  items=  2 browser  https://www.chathamhouse.org/regions
+[ 20] 0.24 hub=0.86 listing publications  items=  1 browser  https://www.chathamhouse.org/publications/the-world-today/contribute
+[ 21] 0.28 hub=1.00 listing publications  items=  1 browser  https://www.chathamhouse.org/publications/the-world-today/subscribe
+[ 22] 0.92 hub=0.92 listing publications  items= 22 browser  https://www.chathamhouse.org/publications/the-world-today/2025-09
+[ 23] 0.88 hub=0.88 listing publications  items= 24 browser  https://www.chathamhouse.org/publications/international-affairs-journal
+[ 24] 0.03 hub=0.08 hub     events        items=  2 browser  https://www.chathamhouse.org/members-and-partners/gift-membership
+[ 25] 0.10 hub=0.34 listing publications  items=  1 browser  https://www.chathamhouse.org/publications/the-world-today/2025-12/chatham-house-librarys-top-books-2025
+[ 26] 0.23 hub=0.82 listing publications  items=  1 browser  https://www.chathamhouse.org/publications/the-world-today/2025-12/book-reviews-art-waging-peace-and-foreign-policy-prophets
+[ 27] 0.82 hub=0.82 listing publications  items= 22 browser  https://www.chathamhouse.org/publications/the-world-today/2025-12
+[ 28] 0.91 hub=0.91 listing publications  items= 30 browser  https://www.chathamhouse.org/publications/research-publications
+[ 29] 0.05 hub=0.15 listing organisation  items=  2 browser  https://www.chathamhouse.org/regions/a-z
+[ 30] 0.42 hub=0.42 hub     news          items= 43 browser  https://www.chathamhouse.org/topics/coronavirus-response
+stage 1: list is https://www.chathamhouse.org/publications/research-publications
+stage 2: paging through the list ...
+  page 1: 30 items at /*/*/ via browser
+  no pagination here; following 'View all research publications' -> https://www.chathamhouse.org/search/content_format/Research%20publication
+  page 1: 10 items at /*/*/ via browser
+  page 2: +10 items (20)
+  page 3: +10 items (30)
+  page 4: +10 items (40)
+stage 3: reading 40 publications ...
+  2026-09-20 academic        The problem with biofuels as a response to the Gulf energy supply shoc Patrick Schröder
+  2026-09-16 academic        How the UK should protect its science and tech research from foreign s Tahlia Peterson
+  2026-08-24 report          What Haitians want from the next phase of UN and international support Christopher Sabatini
+  2026-08-12 academic        The water footprints of the global minerals trade                      Phesheya  Nxumalo
+  2026-07-23 academic        The water footprints of global textiles trade                          Bhargabi Bharadwaj
+  2026-06-21 report          Why a ‘whole-of-society’ model is essential for Ukraine’s recovery     Orysia Lutsevych
+  2026-06-10 report          Addressing the crisis of medical care in armed conflict                Emanuela-Chiara Gillard
+  2026-06-01 report          Saving global economic governance from the ‘Trump shock’               Creon Butler
+  2026-05-27 report          How a Russia–Ukraine ceasefire could imperil Ukrainian and European se Simon Smith
+  2026-05-13 report          Making water use in global trade more sustainable                      Leslie Morris-Iveson
+  2026-05-12 academic        Avoiding a new nuclear arms race                                       Marion Messmer
+  2026-04-27 academic        How a surge in defence and dual-use technology investment could reconf Katja  Bego
+  2026-03-29 working_paper   Breaking the deadlock on AI governance                                 Rowan Wilkinson
+  2026-03-25 academic        Holding state-sponsored hackers and other cyber proxies to account     Joyce Hakmeh
+  2026-02-16 academic        How middle powers can weather US and Chinese AI dominance              Francisco Javier Varela Sandoval
+  2026-01-27 academic        Why renewables and electrification hold the keys to EU energy security Chris Aylett
+  2026-01-26 working_paper   Securing justice for cyber-enabled international crimes                Elizabeth Wilmshurst
+  2026-01-22 working_paper   A roadmap for security and governance reform in Haiti                  Roberta Maggi
+  2026-01-14 report          Transforming Belarus from a Russian asset to a buffer state for Europe Ryhor Astapenia
+  2025-12-19 academic        The water footprints of global food and agriculture trade              Richard King
+  2025-12-18 brief           How the Middle East and North Africa can benefit from adaptive climate Karim Elgendy
+  2025-12-17 report          Escaping the cycle of conflict in Libya                                Tim Eaton
+  2025-12-10 report          Securing the future of US–Japan–South Korea cooperation                Kanishkh Kanodia
+  2025-12-04 academic        How South Korea can balance its US commitments with global engagement  Edward Howell
+  2025-11-13 academic        Rethinking UK aid policy in an era of global funding cuts              Jerome Puri
+  2025-10-28 academic        The case for expanding digital public infrastructure                   Rowan Wilkinson
+  2025-09-24 brief           Will economic policy win China friends in the Global South?            David Lubin
+  2025-09-22 academic        How to bolster food security through global early-warning systems      Bhargabi Bharadwaj
+  2025-09-03 academic        Tightening the oil-price cap to increase the pressure on Russia        Volodymyr Dubrovskiy
+  2025-07-27 academic        Understanding Russia’s Black Sea strategy                              Natalie Sabanadze
+  2025-07-21 academic        Why the Indo-Pacific should be a higher priority for the UK            Ben Bland
+  2025-07-20 report          Russia’s struggle to modernize its military industry                   Mathieu Boulègue
+  2025-07-13 working_paper   Understanding and improving sanctions today                            Christopher Sabatini
+  2025-07-07 working_paper   What the UK must get right in its China strategy                       William Matthews
+  2025-07-06 academic        Mobilizing ‘Team Ukraine’ for a successful recovery                    Orysia Lutsevych
+  2025-06-10 brief           Why peacebuilding fails and what to do about it                        Renad Mansour
+  2025-05-14 academic        Securing the space-based assets of NATO members from cyberattacks      Julia Cournoyer
+  2025-04-22 academic        How China–India relations will shape Asia and the global order         Chietigj Bajpaee
+  2025-04-01 academic        Conflict prevention under pressure                                     Julia Cournoyer
+  2025-03-27 academic        Competing visions of international order                               Leslie Vinjamuri

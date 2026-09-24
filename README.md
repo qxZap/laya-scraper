@@ -1,6 +1,10 @@
 # laya-scraper
 
-**Give it a homepage. It finds where the site keeps its publications and maps what each section holds.**
+**Give it a homepage. It finds where the site keeps its publications, works out how that list pages, and pulls the facts out of each publication.**
+
+Two stages:
+- **`scrape.py`** finds the place: which page is the publications list, plus a map of what every other section holds.
+- **`list.py`** walks that list, including next links, load-more buttons and "view all" pages, and extracts each publication's title, date, authors, summary, PDF, DOI and type.
 
 ```
 $ python scrape.py https://odi.org/en/
@@ -36,7 +40,61 @@ The same code and settings were used on each site, with a budget of 30 pages:
 
 The full reports, with every page visited and classified, are in [`examples/`](examples/): `*.json` holds the report and `*.log` the crawl trace.
 
-## How it works
+## Stage 2: the full list and the facts (`list.py`)
+
+```
+$ python list.py https://www.chathamhouse.org/
+stage 1: list is https://www.chathamhouse.org/publications/research-publications
+stage 2: paging through the list ...
+  page 1: 30 items at /*/*/ via browser
+  no pagination here; following 'View all research publications' -> .../search/content_format/Research%20publication
+  page 1: 10 items at /*/*/ via browser
+  page 2: +10 items (20)
+  page 3: +10 items (30)
+  page 4: +10 items (40)
+stage 3: reading 40 publications ...
+  2026-09-20 academic        The problem with biofuels as a response to the Gulf energy supply shock   Patrick Schröder
+  2026-06-01 report          Saving global economic governance from the ‘Trump shock’                  Creon Butler
+  ...
+```
+
+How to reach the next page is worked out for each site. Nothing is hard-coded. It tries these in order:
+
+| Strategy | When | Seen on |
+|---|---|---|
+| **next-link** | A `rel=next`, "Next ›" or "Load more" link, or the numbered link to page N+1 | ODI (`?page=2` of 407), Chatham House (`?page=1`, counting from 0) |
+| **load-more** | A JS button or infinite scroll. The real browser clicks or scrolls until it has enough items | Brookings (Algolia "Show More", about 51k results) |
+| **view-all** | A curated landing page with no pagination: follow its "View all …" link and start over there | Chatham House |
+| **probe** | No visible control: try `?page=`, `?paged=`, `?p=` and `/page/N/`, and keep whichever returns *new* items | Fallback |
+
+**Item detection.** The list's entries are the group of content links sharing a path pattern, with titles and slug-like URLs. That keeps author facets and tag links out. Collection stops at **`--max-items` (default 40)**, so ODI's 407 pages cost two page loads.
+
+**Facts** come from structured metadata first: JSON-LD, the `citation_*` tags that Google Scholar reads, and OpenGraph. Page content is the fallback: `<h1>`, `<time>`, author links with social handles and "See more" filtered out, and PDF and DOI links. laya then labels each item's **kind**: report, brief, working paper, academic, book, commentary, media, event or other. The site's own list label ("Research paper …") is its strongest hint.
+
+| Site | Paging | Items | Date | Authors | PDF | DOI | Time |
+|---|---|---|---|---|---|---|---|
+| ODI | next-link, est. 407 pages | 40 | 40 | 38 | 37 | 0 | ~51 s |
+| Brookings | load-more (3 clicks) | 39 | 39 | 26 | 33 | 4 | ~49 s |
+| Chatham House | view-all → next-link, est. 37 pages | 40 | 40 | 40 | 40 | 40 | ~100 s, including stage 1 |
+
+Each run is in `examples/*-items.csv`, which opens in Excel, and `*-items.json`. One item looks like this:
+
+```json
+{"url": "https://www.chathamhouse.org/2026/09/problem-biofuels-response-gulf-energy-supply-shock",
+ "title": "The problem with biofuels as a response to the Gulf energy supply shock",
+ "date": "2026-09-20", "authors": ["Patrick Schröder"], "kind": "academic", "kind_confidence": 0.40,
+ "summary": "The global push for energy security post-Hormuz cannot come at the cost of food insecurity and deforestation.",
+ "pdf": "https://www.chathamhouse.org/sites/default/files/2026-09/2026-09-22-problem-with-biofuels-schroeder-bharadwaj-king.pdf",
+ "doi": "10.55317/9781784136871"}
+```
+
+```
+python list.py https://odi.org/en/                                  # stage 1 + 2
+python list.py --hub https://odi.org/en/publications/               # skip discovery
+python list.py https://odi.org/en/ --max-items 200 --out odi.csv    # .csv or .json
+```
+
+## How it works (stage 1)
 
 ```mermaid
 flowchart LR
@@ -80,7 +138,8 @@ python -m venv .venv
 .venv/Scripts/python -m pip install -r requirements.txt
 npm install
 
-.venv/Scripts/python test_parse.py          # structure self-check, no network → "ok"
+.venv/Scripts/python test_parse.py          # structure self-checks, no network → "ok"
+.venv/Scripts/python test_list.py           # pagination + fact extraction checks → "ok"
 .venv/Scripts/python scrape.py https://odi.org/en/
 ```
 
@@ -110,16 +169,18 @@ On macOS or Linux, use `.venv/bin/python`. The first run downloads the laya chec
 
 Cloudflare fingerprints true headless Chrome in every mode (`headless: true`, `'new'`, `'shell'`). So by default the browser is a normal Chrome window placed off-screen, which you never see. On Linux, puppeteer-real-browser runs it under xvfb. `HEADLESS=1` forces true headless for sites without a challenge.
 
-Two details made challenge handling reliable with several tabs at once:
-- Chrome slows down background tabs, which stalled their challenges. The browser runs with that throttling turned off.
-- A challenge can clear during the first page load while the recorded status stays 403. The renderer uses Cloudflare's `cf-mitigated` header to tell these cases from a real 403.
+Details that made parallel browsing reliable:
+- **Each "tab" is its own off-screen window.** Chrome only fully renders the front tab of a window. Lazy lists in background tabs never loaded (Brookings came back empty), and Cloudflare challenges stalled. Separate windows fix both and still share cookies, so a challenge is solved once per site.
+- **A challenge can clear during the first page load** while the recorded status stays 403. The renderer uses Cloudflare's `cf-mitigated` header to tell these cases from a real 403. If the challenge redirect lands while the page is being read, the page is read again.
+- **Lists that load asynchronously** are captured only after the page's link count stops changing, not just after the network goes quiet.
 
 ## Limitations and next steps
 
 - **Weights are hand-tuned** on three sites. With 20–50 labelled sites they could be fitted, or laya could be fine-tuned on (page → is-hub) pairs; the laya repo ships a fine-tuning notebook.
-- **`holds` labels are zero-shot and noisy.** For example, an experts page can come out as "news". The `answer` relies on the score, not these labels.
+- **`holds` and `kind` labels are zero-shot and noisy.** For example, an experts page can come out as "news", and Chatham House research papers often come out as "academic". `kind_confidence` is reported with each label. Fine-tuning laya on a few hundred labelled pages is the fix. The `answer` relies on the score, not these labels.
+- **Authors without metadata** come from author links on the page. Brookings has no structured author data, so 26 of 39 items have authors.
 - **Query strings are dropped** to avoid `?page=` duplicates. This breaks sites that route pages by query (`?p=123`).
-- **Pages reached by clicking** (infinite scroll buttons, faceted search) are not explored. The renderer only scrolls once.
+- **Lists fed by an API with no page URLs or buttons** (for example, cursor-based XHR) are out of reach. Reading the list's JSON API directly would be the next step.
 - **Crawl politely.** There is no robots.txt handling or rate limiting yet. Keep `--tabs` modest on sites you don't own.
 
 ## Files
@@ -127,9 +188,10 @@ Two details made challenge handling reliable with several tabs at once:
 | | |
 |---|---|
 | [`scrape.py`](scrape.py) | Crawler, parser, laya "brain" and scoring (~300 lines) |
-| [`render.js`](render.js) | Multi-tab real-browser worker, speaking JSON lines over stdin/stdout (~70 lines) |
-| [`test_parse.py`](test_parse.py) | Structure checks (lists vs items vs nav, dated paths) |
-| [`examples/`](examples/) | Reports and crawl traces for the three sites above |
+| [`list.py`](list.py) | Stage 2: pagination strategies, item collection and fact extraction (~320 lines) |
+| [`render.js`](render.js) | Real-browser worker: parallel off-screen windows, Cloudflare handling, list expansion (load-more and scroll), JSON lines over stdin/stdout (~130 lines) |
+| [`test_parse.py`](test_parse.py), [`test_list.py`](test_list.py) | Offline checks: lists vs items vs nav, dated paths, next-link detection, page counts, metadata and fallback extraction |
+| [`examples/`](examples/) | Stage 1 reports (`<site>.json`/`.log`) and stage 2 results (`<site>-items.csv`/`.json`/`.log`) for the three sites |
 
 ## Credits
 

@@ -111,6 +111,7 @@ def parse(url, html):
         "links": links,
         "items": items,
         "gpath": gpath,
+        "groups": groups,
         "pdfs": pdfs,
         "dates": len(DATE.findall(text)),
         "paged": bool(soup.select('a[rel~="next"], link[rel~="next"], [class*="pagination"], [class*="pager"]')),
@@ -181,8 +182,8 @@ class Brain:
         return [(a["hub"]["noul"], a["role"]["choice"], a["holds"]["choice"]) for a in self._run(states, self.page_q)]
 
 
-def crawl(start, target, max_pages, max_depth, mode, tabs):
-    brain, browser, pool = Brain(target), Browser(tabs), ThreadPoolExecutor(tabs)
+def crawl(start, target, max_pages, max_depth, mode, tabs, brain=None):
+    brain, browser, pool = brain or Brain(target), Browser(tabs), ThreadPoolExecutor(tabs)
     start = norm(start)
     heap, seen, places, known, listed, done, n = [(-1.0, 0, start, 0)], {start}, [], set(), set(), set(), 0
     inlinks = Counter()
@@ -289,6 +290,8 @@ def crawl(start, target, max_pages, max_depth, mode, tabs):
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):  # titles are full of ’ – ö; a cp1252 console would crash
+        stream.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
     ap.add_argument("--target", default="publications (research reports, papers, briefs)")

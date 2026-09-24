@@ -1,11 +1,46 @@
 // Real-browser renderer (puppeteer-real-browser, passes Cloudflare). One browser, up to TABS pages at once.
-// stdin: one URL per line. stdout: one JSON line per URL, in completion order:
-// {url, final_url, status, html} or {url, error}. Tabs share cookies, so a solved challenge sticks.
+// stdin: one URL per line, or a JSON line {"url", "more": N} to expand a lazy list N times first.
+// stdout: one JSON line per URL, in completion order: {url, final_url, status, html, more} or {url, error}.
+// Tabs share cookies, so a solved challenge sticks.
 const { connect } = require('puppeteer-real-browser');
 const readline = require('readline');
 
 const TABS = +process.env.TABS || 4;
 const CHALLENGE = /just a moment|attention required|checking your browser|verify you are human/i;
+const idle = page => page.waitForNetworkIdle({ idleTime: 500, timeout: 6000 }).catch(() => {});
+
+// Grow a lazy list: scroll to the bottom and click a visible in-page "load/show more" control, repeatedly,
+// until the page stops gaining links. Covers infinite scroll and load-more buttons alike.
+async function expand(page, times) {
+  const done = { rounds: 0, clicks: 0 };
+  await page.bringToFront(); // lazy lists load on visibility; background tabs never see it
+  await page.evaluate(() => document.querySelector('a[href]')?.scrollIntoView());
+  // async lists arrive after "network idle"; wait until the link count holds still (max ~8s)
+  for (let i = 0, last = -1, same = 0; i < 16 && same < 2; i++) {
+    const n = await page.evaluate(() => document.querySelectorAll('a[href]').length);
+    same = n === last ? same + 1 : 0;
+    last = n;
+    await new Promise(r => setTimeout(r, 500));
+  }
+  for (let i = 0; i < times; i++) {
+    const before = await page.evaluate(() => document.querySelectorAll('a[href]').length);
+    const clicked = await page.evaluate(() => {
+      const re = /^(load|show|view|see)\s+more\b|^more (results|items|publications|articles)\b|^load\b/i;
+      const el = [...document.querySelectorAll('button, [role=button], a[href="#"], a[href^="javascript"], a:not([href])')]
+        .find(e => re.test((e.innerText || '').trim()) && e.offsetParent !== null);
+      if (el) el.click();
+      return !!el;
+    });
+    await page.bringToFront();
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await idle(page);
+    const after = await page.evaluate(() => document.querySelectorAll('a[href]').length);
+    if (after <= before) break;
+    done.rounds++;
+    done.clicks += clicked;
+  }
+  return done;
+}
 
 (async () => {
   // ponytail: true headless is fingerprinted by Cloudflare; a headed window parked off-screen is
@@ -17,11 +52,28 @@ const CHALLENGE = /just a moment|attention required|checking your browser|verify
     args: ['--window-position=-32000,-32000', '--disable-background-timer-throttling',
            '--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding'],
   });
+  // Chrome only fully renders the front tab of a window, so lazy lists in background tabs never load.
+  // Each "tab" is therefore its own off-screen window: all render, and they still share cookies.
+  const cdp = await browser.target().createCDPSession();
+  async function newWindow() {
+    const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank', newWindow: true });
+    const { windowId } = await cdp.send('Browser.getWindowForTarget', { targetId });
+    await cdp.send('Browser.setWindowBounds', { windowId, bounds: { left: -32000, top: -32000, width: 1280, height: 900 } });
+    const target = await browser.waitForTarget(t => t._targetId === targetId);
+    return target.page();
+  }
   let active = 0;
   const queue = [];
 
-  async function render(url) {
-    const page = await browser.newPage();
+  async function render(job, retry = 1) {
+    const r = await renderOnce(job);
+    // a challenge redirect can land mid-read ("Execution context was destroyed"): read it again
+    if (retry && /context was destroyed|detached|navigat/i.test(r.error || '')) return render(job, retry - 1);
+    return r;
+  }
+
+  async function renderOnce({ url, more = 0 }) {
+    const page = await newWindow();
     try {
       let res, challenged = false;
       // intermittently a challenge doesn't clear; a fresh load (with the cookies earned so far) usually does
@@ -39,8 +91,9 @@ const CHALLENGE = /just a moment|attention required|checking your browser|verify
       // lazy lists often render on scroll
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await new Promise(r => setTimeout(r, 800));
+      const grown = more ? await expand(page, more) : null;
       const status = CHALLENGE.test(await page.title()) ? 403 : res ? res.status() : 200;
-      return { url, final_url: page.url(), status, title: await page.title(), html: await page.content() };
+      return { url, final_url: page.url(), status, title: await page.title(), html: await page.content(), more: grown };
     } catch (e) {
       return { url, error: String(e) };
     } finally {
@@ -60,7 +113,12 @@ const CHALLENGE = /just a moment|attention required|checking your browser|verify
   }
 
   const rl = readline.createInterface({ input: process.stdin });
-  rl.on('line', url => { queue.push(url.trim()); pump(); });
+  rl.on('line', line => {
+    line = line.trim();
+    if (!line) return;
+    queue.push(line.startsWith('{') ? JSON.parse(line) : { url: line });
+    pump();
+  });
   rl.on('close', async () => {
     while (active || queue.length) await new Promise(r => setTimeout(r, 200));
     await browser.close();

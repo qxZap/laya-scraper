@@ -1,0 +1,783 @@
+{
+  "site": "https://odi.org/en/publications/",
+  "list": "https://odi.org/en/publications/",
+  "mode": "next-link",
+  "item_pattern": "/en/publications/",
+  "pages_fetched": 2,
+  "total_results_est": null,
+  "total_pages_est": 407,
+  "next_example": "https://odi.org/en/publications/?page=2",
+  "items_found": 40,
+  "items": [
+    {
+      "url": "https://odi.org/en/publications/beyond-sovereignty-nationally-led-crisis-response-in-east-africa/",
+      "list_title": "Beyond sovereignty: nationally led crisis response in East Africa",
+      "title": "Beyond sovereignty: nationally led crisis response in East Africa",
+      "date": "2026/09/17",
+      "authors": [
+        "John Bryant"
+      ],
+      "summary": "This policy brief draws some common findings from the examples of Kenya and Somalia, including both barriers and areas of practical progress through sub-national authorities, civil society and social protection mechanisms. These common findings are then considered in the context of Uganda, South Sudan and Ethiopia, each undergoing unique transitions and with lessons for state authorities, civil society, donors and international organisations.",
+      "pdf": "https://odi.org/documents/10192/East_Africa_policy_brief_final.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.9857
+    },
+    {
+      "url": "https://odi.org/en/publications/poverty-and-public-finance-a-primer/",
+      "list_title": "Poverty and public finance: a primer",
+      "title": "Poverty and public finance: a primer",
+      "date": "2026/09/02",
+      "authors": [
+        "Martin Evans"
+      ],
+      "summary": "A primer on how poverty is defined, measured and reported and how fiscal policy shapes poverty outcomes.",
+      "pdf": "https://odi.org/documents/10189/Poverty_and_public_finance.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.65
+    },
+    {
+      "url": "https://odi.org/en/publications/what-makes-finance-ministry-officials-tick/",
+      "list_title": "What makes finance ministry officials tick",
+      "title": "What makes finance ministry officials tick",
+      "date": "2026/08/05",
+      "authors": [
+        "Gundula Löffler",
+        "Andrea Sissa Velandia",
+        "Antoine Lacroix"
+      ],
+      "summary": "A survey of 142 finance ministry officials across low- and middle-income countries reveals how they navigate competing budget demands, and who they believe really holds influence over spending decisions.",
+      "pdf": "https://odi.org/documents/10181/What_makes_finance_ministry_officials_tick.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.7512
+    },
+    {
+      "url": "https://odi.org/en/publications/equitable-ai-governance-for-the-global-south-a-supply-chains-and-value-chains-approach/",
+      "list_title": "Equitable AI governance for the Global South: a supply chains and value chains approach",
+      "title": "Equitable AI governance for the Global South: a supply chains and value chains approach",
+      "date": "2026/08/04",
+      "authors": [
+        "Dr Divij Joshi"
+      ],
+      "summary": "This report develops the concept of the ‘Global AI Divide’, in order to conceptually understand various intersecting dimensions of global inequalities and their intersections with AI development.",
+      "pdf": "",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.8758
+    },
+    {
+      "url": "https://odi.org/en/publications/does-eu-aid-promote-eu-exports/",
+      "list_title": "Does EU aid promote EU exports?",
+      "title": "Does EU aid promote EU exports?",
+      "date": "2026/09/23",
+      "authors": [
+        "Derrick Abudu",
+        "Maximiliano Mendez-Parra",
+        "Dirk Willem te Velde"
+      ],
+      "summary": "A 20-year empirical study shows every €1 in EU development cooperation to Africa is associated with €6.80 in European goods and services exports. Discover how investing in partner-country development actively strengthens European competitiveness and trade.",
+      "pdf": "https://odi.org/documents/10198/Study-Summary-EU-Development-Cooperation-Delivers-for-Both-Partners-September-2026.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.729
+    },
+    {
+      "url": "https://odi.org/en/publications/how-lgbtqi-movements-shape-inclusive-civic-space-in-pakistan/",
+      "list_title": "How LGBTQI+ movements shape inclusive civic space in Pakistan",
+      "title": "How LGBTQI+ movements shape inclusive civic space in Pakistan",
+      "date": "2026/09/22",
+      "authors": [
+        "Ayesha Khan",
+        "Sarah Zaman",
+        "Ghausia Rashid Salam",
+        "Evie Browne"
+      ],
+      "summary": "This report by ODI Global, ALIGN and the Global Philanthropy Project, demonstrates how LGBTQI+ movements have changed civic space in Pakistan, even as their participation is constrained by discriminatory social norms and narrowed opportunities to exercise political voice.",
+      "pdf": "https://odi.org/documents/10196/How_LGBTQI_movements_shape_inclusive_civic_space_in_Pakistan.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.9563
+    },
+    {
+      "url": "https://odi.org/en/publications/resourcing-lgbtqi-movements-in-the-global-south-and-east-to-build-inclusive-civic-space/",
+      "list_title": "Resourcing LGBTQI+ movements in the Global South and East to build inclusive civic space",
+      "title": "Resourcing LGBTQI+ movements in the Global South and East to build inclusive civic space",
+      "date": "2026/09/22",
+      "authors": [
+        "Evie Browne",
+        "Carmen Leon-Himmelstine",
+        "Ayesha Khan"
+      ],
+      "summary": "Drawing on research from Pakistan, Thailand and Argentina, this Briefing Paper by ODI Global, ALIGN and the Global Philanthropy Project, argues that investment in LGBTQI+ movements is an investment in a more inclusive civic space – and, ultimately, in democracy.",
+      "pdf": "https://odi.org/documents/10197/ResourcingMovements-PolicyBrief.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.8992
+    },
+    {
+      "url": "https://odi.org/en/publications/the-talibans-madrassa-system-in-afghanistan-the-threat-to-global-peace-and-security/",
+      "list_title": "The Taliban’s madrassa system in Afghanistan: the threat to global peace and security",
+      "title": "The Taliban’s madrassa system in Afghanistan: the threat to global peace and security",
+      "date": "2026/09/21",
+      "authors": [
+        "Ayesha Khan",
+        "Mariam Safi"
+      ],
+      "summary": "The Taliban’s development of an ideologically driven madrassa education system could pose risks to global peace and security. This ODI Policy Brief warns global policymakers about the implications of this emerging system.",
+      "pdf": "https://odi.org/documents/10195/ODI-ES-AfghanistanMadrassa-PolicyBrief-Aug26-Proof03.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.9781
+    },
+    {
+      "url": "https://odi.org/en/publications/public-finance-in-the-digital-era-emerging-themes-2026/",
+      "list_title": "Public finance in the digital era: emerging themes 2026",
+      "title": "Public finance in the digital era: emerging themes 2026",
+      "date": "2026/09/18",
+      "authors": [
+        "Ameya Ashok Naik"
+      ],
+      "summary": "How can governments use digital technologies, AI and data to strengthen public financial management, improve accountability and respond to emerging fiscal pressures?",
+      "pdf": "https://odi.org/documents/10193/Publicfinance_in_the_digital_era-emerging_themes_2026.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.8178
+    },
+    {
+      "url": "https://odi.org/en/publications/defining-progress-in-domestic-capital-market-development/",
+      "list_title": "Defining progress in domestic capital market development",
+      "title": "Defining progress in domestic capital market development",
+      "date": "2026/09/03",
+      "authors": [
+        "Grant Metcalfe-Smith",
+        "Andrea Carvajal"
+      ],
+      "summary": "This note was prepared for the third ODI Global–Gates Foundation roundtable on domestic capital market development in Africa.",
+      "pdf": "https://odi.org/documents/10190/Defining_progress_in_DCMD.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "commentary",
+      "kind_confidence": 0.2472
+    },
+    {
+      "url": "https://odi.org/en/publications/community-resilience-and-inclusion-in-protracted-crises-lessons-from-the-syrian-civil-war/",
+      "list_title": "Community resilience and inclusion in protracted crises: lessons from the Syrian civil war",
+      "title": "Community resilience and inclusion in protracted crises: lessons from the Syrian civil war",
+      "date": "2026/08/10",
+      "authors": [
+        "Ian D. Quick"
+      ],
+      "summary": "This case study discusses support to community resilience and economic inclusion during the Syria crisis for the period 2020–2024.",
+      "pdf": "https://odi.org/documents/10185/Case_study_Community_resilience_and_inclusion_in_protracted_crises.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.7842
+    },
+    {
+      "url": "https://odi.org/en/publications/programme-of-work-ida/",
+      "list_title": "Programme of work - IDA Technical Working Group",
+      "title": "Programme of work - IDA Technical Working Group",
+      "date": "2026/07/20",
+      "authors": [],
+      "summary": "Explore research from the IDA Technical Working Group on reforms to strengthen IDA's financial sustainability, operations and concessional financing.",
+      "pdf": "https://odi.org/documents/10128/Programme_of_work_-_TWG.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.6232
+    },
+    {
+      "url": "https://odi.org/en/publications/climate-change-is-driving-up-loss-and-damage-in-sids/",
+      "list_title": "Climate change is driving up loss and damage in SIDS",
+      "title": "Climate change is driving up loss and damage in SIDS",
+      "date": "2026/06/16",
+      "authors": [
+        "Emily Wilkinson",
+        "Vikrant Panwar"
+      ],
+      "summary": "Small Island Developing States (SIDS) experience higher levels of loss and damage from extreme weather in relation to their gross domestic product (GDP) than any other group of countries. And new data suggests that an increasingly high proportion of these losses can be directly attributed to climate change.",
+      "pdf": "https://odi.org/documents/10134/Briefing_Paper_Climate_change_is_driving_up_loss_and_damage_in_SIDS.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.814
+    },
+    {
+      "url": "https://odi.org/en/publications/raising-fdi-for-african-manufacturing-an-assessment-of-manufacturing-africas-additionality/",
+      "list_title": "Raising FDI for African manufacturing: an assessment of Manufacturing Africa’s additionality",
+      "title": "Raising FDI for African manufacturing: an assessment of  Manufacturing Africa’s additionality",
+      "date": "2026/07/27",
+      "authors": [
+        "Linda Calabrese",
+        "Tiina Pasanen",
+        "Derrick Abudu",
+        "Courtney Lindsay",
+        "Anushka Sisodia",
+        "Dirk Willem te Velde"
+      ],
+      "summary": "New independent research finds Manufacturing Africa (MA) has mobilised £2.2bn in FDI and 150,000 jobs since 2019, accelerating and strengthening investment into African manufacturing. The study assesses MA’s additionality and highlights its catalytic role in driving structural transformation.",
+      "pdf": "https://odi.org/documents/10170/Raising_FDI_for_African_manufacturing_-_External_final.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.436
+    },
+    {
+      "url": "https://odi.org/en/publications/refugee-camps-current-practice-historical-perspectives/",
+      "list_title": "Refugee camps: current practice and historical perspectives",
+      "title": "Refugee camps: current practice and historical perspectives",
+      "date": "2026/07/23",
+      "authors": [
+        "Benjamin Thomas White",
+        "Kerrie Holloway"
+      ],
+      "summary": "This outcome note details the reflection, discussion and learning that were generated in a series of workshops that sought to bring together stakeholders from a wide range of organisations led by and supporting refugees.",
+      "pdf": "https://odi.org/documents/10168/Refugee_camps_outcome_note-final.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.7152
+    },
+    {
+      "url": "https://odi.org/en/publications/financing-the-frontline-how-health-facilities-receive-manage-and-utilise-financial-resources-in-six-low-and-middle-income-countries/",
+      "list_title": "Financing the frontline: how health facilities receive, manage and utilise financial resources in six low- and middle-in",
+      "title": "Financing the frontline: how health facilities receive, manage and utilise financial resources in six low- and middle-income countries",
+      "date": "2026/07/16",
+      "authors": [
+        "Tom Hart",
+        "Danielle Serebro",
+        "Antoine Lacroix"
+      ],
+      "summary": "A new cross-country analysis examines how financing reaches primary health care (PHC) facilities in six countries — Burkina Faso, Indonesia, Kenya, Pakistan (Khyber Pakhtunkhwa), the Philippines, and Uganda — and how public financial management (PFM) systems influence facilities' ability to use these resources. The study explores funding sources and flows, the PFM rules governing access and spending, and the types of expenditures that PHC facilities are permitted to make.Drawing on comparative evidence across diverse health systems, the report finds that improving PHC service delivery depends ",
+      "pdf": "https://healthsystemsinsight.org/wp-content/uploads/2026/07/Facility-Financing-Report_July-2026.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.5269
+    },
+    {
+      "url": "https://odi.org/en/publications/making-an-exception-maintaining-oda-eligibility-for-small-island-developing-states/",
+      "list_title": "Making an exception: maintaining ODA eligibility for Small Island Developing States",
+      "title": "Making an exception: maintaining ODA eligibility for Small Island Developing States",
+      "date": "2026/07/16",
+      "authors": [
+        "Vikrant Panwar",
+        "Gail Hurley",
+        "Emily Wilkinson",
+        "Aditi Solanki",
+        "Johari Weaver"
+      ],
+      "summary": "Small Island Developing States (SIDS) face a graduation framework that isn't working for them - and with 11 set to graduate from overseas development assistance (ODA) eligibility in the coming years, the case for reform is urgent.",
+      "pdf": "https://odi.org/documents/10127/Making-an-exception-Working-paper-V4.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.7332
+    },
+    {
+      "url": "https://odi.org/en/publications/syria-climate-risks-water-electricity/",
+      "list_title": "Background analysis of climate risks to Syria’s electricity and urban water sectors",
+      "title": "Background analysis of climate risks to Syria’s electricity and urban water sectors",
+      "date": "2026/07/15",
+      "authors": [
+        "Sarah Opitz-Stapleton",
+        "Magda Nassef",
+        "Camille Laville",
+        "Jim Jarvie",
+        "Yue Cao",
+        "Basile Maupu-Estupina",
+        "Mauricio Vazquez"
+      ],
+      "summary": "This report brings together new analysis of Syria’s climate trends, population scenarios, water systems and electricity demand to inform risk-informed reconstruction planning through 2045 and beyond.",
+      "pdf": "https://odi.org/documents/10125/ODI_Global_-_Background_Analysis_Climate_Risks_to_Syria_electricity_and_urban_WASH.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.9785
+    },
+    {
+      "url": "https://odi.org/en/publications/tax-expenditure-report-rwanda/",
+      "list_title": "Tax expenditure report: Rwanda",
+      "title": "Tax expenditure report: Rwanda",
+      "date": "2026/07/15",
+      "authors": [
+        "Romal Sanjeeda",
+        "Harshil Parekh"
+      ],
+      "summary": "TaxDev supported Rwanda's eighth Tax Expenditure Report, strengthening fiscal transparency with improved analysis, forecasting, and climate tax tagging.",
+      "pdf": "https://odi.org/documents/10123/Tax_Expenditure_Report_2024-2025.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.5561
+    },
+    {
+      "url": "https://odi.org/en/publications/the-political-economy-of-education-system-incoherence-in-jordan/",
+      "list_title": "The political economy of education system (in)coherence in Jordan",
+      "title": "The political economy of education system (in)coherence in Jordan",
+      "date": "2026/07/15",
+      "authors": [
+        "Olya Homonchuk",
+        "Caterina Mazzilli",
+        "Tim Kelsall"
+      ],
+      "summary": "The paper captures the political economy context in Jordanian education sector as it stood in February 2025 and provides a useful baseline for understanding subsequent developments.",
+      "pdf": "https://odi.org/documents/10124/The_political_economy_of_education_system_incoherence_in_Jordan.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "academic",
+      "kind_confidence": 0.6757
+    },
+    {
+      "url": "https://odi.org/en/publications/has-the-world-bank-really-accelerated-50-million-electricity-connections-in-africa/",
+      "list_title": "Has the World Bank really ‘accelerated’ 50 million electricity connections in Africa?",
+      "title": "Has the World Bank really ‘accelerated’ 50 million electricity connections in Africa?",
+      "date": "2026/07/09",
+      "authors": [
+        "Bright Simons"
+      ],
+      "summary": "ODI Global advises leaders on driving positive change. We turn bold ideas, evidence, and broad expertise into actionable strategies for a more resilient, just and equitable future.",
+      "pdf": "https://odi.org/documents/10121/ODI_Simons_50_million_electricity_connectons_in_Africa.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.3592
+    },
+    {
+      "url": "https://odi.org/en/publications/north-stars-for-northern-donors-in-a-post-aid-world/",
+      "list_title": "North Stars for Northern Donors in a Post-Aid World: moving from dialogue to decisions",
+      "title": "North Stars for Northern Donors in a Post-Aid World: moving from dialogue to decisions",
+      "date": "2026/07/02",
+      "authors": [
+        "Nilima Gulrajani"
+      ],
+      "summary": "In this paper, we set out eight ambitious propositions for how Northern donors might chart a course through the decade ahead.",
+      "pdf": "https://odi.org/documents/10120/North_Stars_for_Northern_DPAW.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "academic",
+      "kind_confidence": 0.4072
+    },
+    {
+      "url": "https://odi.org/en/publications/gender-norms-and-protection-navigating-agency-risk-and-backlash/",
+      "list_title": "Gender norms and protection: navigating agency, risk and backlash",
+      "title": "Gender norms and protection: navigating agency, risk and backlash",
+      "date": "2026/07/07",
+      "authors": [
+        "Anki Sjöberg",
+        "Ján Michalko",
+        "Gemma Davies"
+      ],
+      "summary": "This report identifies six critical takeaways for humanitarian, protection and gender actors to strengthen the intersection of gender norms with protection action in the current hostile geopolitical context.",
+      "pdf": "https://odi.org/documents/10119/HPG_WP_gender_norms_and_protection_final3.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.9218
+    },
+    {
+      "url": "https://odi.org/en/publications/comparing-tax-and-benefit-microsimulation-models-a-guide-for-analysts-in-low-and-middle-income-countries/",
+      "list_title": "Comparing tax and benefit microsimulation models: a guide for analysts in low- and middle-income countries",
+      "title": "Comparing tax and benefit microsimulation models: a guide for analysts in low- and middle-income countries",
+      "date": "2026/07/01",
+      "authors": [
+        "Laura Abramovsky",
+        "Martin Evans",
+        "Abdul Malik Iddrisu",
+        "Martin Mikloš",
+        "David Philips"
+      ],
+      "summary": "Distributional analysis is a crucial component of policymaking. Distributional models estimate who gains from and who bears the costs of different tax and benefit policies. They can provide a detailed diagnostic assessment of the existing fiscal system, help identify areas for reform, and model the impacts of proposed reforms and alternative policy scenarios. This helps policymakers understand the distributional, poverty, and inequality impacts of different policies and their combinations.Multiple tools for distributional analysis are now available for low- and middle-income countries (L&amp;M",
+      "pdf": "",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.5428
+    },
+    {
+      "url": "https://odi.org/en/publications/oppression-liberation-and-humanitarianism-in-palestine-myanmar-and-sudan/",
+      "list_title": "Oppression, liberation and humanitarianism in Palestine, Myanmar and Sudan",
+      "title": "Oppression, liberation and humanitarianism in Palestine, Myanmar and Sudan",
+      "date": "2026/07/01",
+      "authors": [
+        "Nora Hassanien",
+        "Manny Maung",
+        "Dustin Barter"
+      ],
+      "summary": "This paper examines how historical and contemporary settler colonialism, compounded by predatory capitalism, drive extreme violence and vast humanitarian needs in Palestine, Myanmar and Sudan. They are not accidental crises but manufactured and sustained by oppressive power systems and malicious actors.",
+      "pdf": "https://odi.org/documents/10113/Oppression-liberation-humanitarianism_final.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.5777
+    },
+    {
+      "url": "https://odi.org/en/publications/impact-report-bridging-europe-and-the-world-in-a-fragmented-era/",
+      "list_title": "ODI Europe Impact Report: Bridging Europe and the world in a fragmented era",
+      "title": "ODI Europe Impact Report: Bridging Europe and the world in a fragmented era",
+      "date": "2026/07/16",
+      "authors": [],
+      "summary": "Europe's role in the world is being tested, renegotiated, and reshaped in real time. As geopolitical rivalry intensifies, economic security reshapes strategic choices, and multilateral cooperation grows more contested, the assumptions that once underpinned European policymaking no longer hold. Our new impact report sets out how ODI Europe has worked over the past year to help Europe and its partners navigate this more complex and interconnected global landscape.",
+      "pdf": "https://odi.org/documents/10126/Impact_Report_Bridging_Europe__and_the_World_in_a_Fragmented_Era_ODI.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.4841
+    },
+    {
+      "url": "https://odi.org/en/publications/the-eu-malawi-partnership/",
+      "list_title": "The EU–Malawi partnership: outlook for EU development cooperation",
+      "title": "The EU–Malawi partnership: outlook for EU development cooperation",
+      "date": "2026/07/31",
+      "authors": [
+        "Claire Kumar",
+        "Davide Fina"
+      ],
+      "summary": "This report explores the outlook for the EU’s development cooperation in Malawi and particularly how alignment with the Global Gateway strategy and the EU’s new strategic agenda, are reshaping programming and investments in the country.",
+      "pdf": "https://odi.org/documents/10180/EU-Malawi_partnership_-_policy_brief.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.9859
+    },
+    {
+      "url": "https://odi.org/en/publications/delivering-an-ecosystem-approach-to-humanitarian-action/",
+      "list_title": "Delivering an ecosystem approach to humanitarian action: proposals from the Advisory Panel on the Future of Humanitarian",
+      "title": "Delivering an ecosystem approach to humanitarian action: proposals from the Advisory Panel on the Future of Humanitarian Action",
+      "date": "2026/06/29",
+      "authors": [
+        "Advisory Panel on the Future of Humanitarian Action"
+      ],
+      "summary": "The Advisory Panel on the Future of Humanitarian Action proposes an ecosystem approach to the humanitarian system, which would entail bolstering the local systems that already serve people in need, while addressing the power imbalances in terms of funding, decision-making, risk and accountability.",
+      "pdf": "https://odi.org/documents/10114/FHA_shifts_paper_final_r9ZmWS7.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.44
+    },
+    {
+      "url": "https://odi.org/en/publications/getting-funds-to-the-front-line/",
+      "list_title": "Getting funds to the front-line: Uganda's experience with DFF",
+      "title": "Getting funds to the front-line: Uganda's experience with DFF",
+      "date": "2026/06/26",
+      "authors": [
+        "Antoine Lacroix",
+        "Angellah Nakyanzi",
+        "Martin Wabwire",
+        "Keren Chebet",
+        "Derrick Semukasa",
+        "Tom Hart"
+      ],
+      "summary": "This paper traces how Uganda's DFF system evolved across three reform phases between 2007 and 2015.",
+      "pdf": "https://odi.org/documents/10109/Getting_funds_to_the_front-line_a3rshFF.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "academic",
+      "kind_confidence": 0.4637
+    },
+    {
+      "url": "https://odi.org/en/publications/delivering-on-gender-equality-the-missing-piece-in-climate-and-food-systems-policy/",
+      "list_title": "Delivering on gender equality: the missing piece in climate and food systems policy",
+      "title": "Delivering on gender equality: the missing piece in climate and food systems policy",
+      "date": "2026/06/24",
+      "authors": [
+        "Maryam Rezaei",
+        "Shahzoda Alikhanova"
+      ],
+      "summary": "This brief examines the structural failures in climate and food systems policy and finance that leave women in climate-vulnerable agrifood contexts the most exposed and least supported.",
+      "pdf": "https://odi.org/documents/10104/ODI_Global_Policy_brief_Gender_equality_pass6.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.9925
+    },
+    {
+      "url": "https://odi.org/en/publications/online-violence-against-women-in-politics-what-shapes-political-party-responses-to-technology-facilitated-gender-based-violence/",
+      "list_title": "Online violence against women in politics: what shapes political party responses to technology-facilitated gender-based ",
+      "title": "Online violence against women in politics: what shapes political party responses to technology-facilitated gender-based violence?",
+      "date": "2026/06/24",
+      "authors": [
+        "Ján Michalko",
+        "Diana Jiménez Thomas Rodriguez"
+      ],
+      "summary": "In order to promote and protect fair and democratic participation in politics, this ALIGN Report explores what political parties are doing in response to TFGBV and what factors shape their action.",
+      "pdf": "",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.7137
+    },
+    {
+      "url": "https://odi.org/en/publications/the-state-of-sids-report-2026-defending-the-special-case/",
+      "list_title": "The State of SIDS Report 2026: defending the special case",
+      "title": "The State of SIDS Report 2026: defending the special case",
+      "date": "2026/06/24",
+      "authors": [
+        "Eliorah Malifa",
+        "Emily Wilkinson",
+        "Jack Corbett",
+        "Matthew Bishop",
+        "Gail Hurley",
+        "Courtney Lindsay",
+        "Rachid Bouhia",
+        "George Carter"
+      ],
+      "summary": "The inaugural State of SIDS Report 2026 from the Resilient and Sustainable Islands Initiative (RESI) at ODI Global.",
+      "pdf": "https://odi.org/documents/10095/SSR2026-V8-Digital-Higher-res.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.4341
+    },
+    {
+      "url": "https://odi.org/en/publications/green-trade-regional-value-chains-and-new-partnerships-for-cooperation-accelerating-green-industrialisation-through-partnerships-with-a-focus-on-africa/",
+      "list_title": "Green trade, regional value chains and new partnerships for cooperation: accelerating green industrialisation through pa",
+      "title": "Green trade, regional value chains and new partnerships for cooperation: accelerating green industrialisation through partnerships with a focus on Africa",
+      "date": "2026/06/23",
+      "authors": [
+        "Jodie Keane",
+        "Bernardo Arce Fernandez"
+      ],
+      "summary": "As global supply chains shift toward resilience, this report outlines how green trade, regional value chains and new partnerships can unlock investment, strengthen economic security and drive Africa’s green industrial transformation.",
+      "pdf": "https://odi.org/documents/10093/Briefing_Paper_-_Green_trade_regional_value_chains_and_new_partnerships_for_co_6S6nVKB.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.82
+    },
+    {
+      "url": "https://odi.org/en/publications/implementation-of-the-afcfta-protocol-on-investment-a-stocktake-of-promotion-and-facilitation-provisions-and-potential-effects-on-textiles-and-garments-value-chains/",
+      "list_title": "Implementation of the AfCFTA Protocol on Investment: a stocktake of promotion and facilitation provisions and potential ",
+      "title": "Implementation of the AfCFTA Protocol on Investment: a stocktake of promotion and facilitation provisions and potential effects on textiles and garments value chains",
+      "date": "2026/06/19",
+      "authors": [
+        "Bernardo Arce Fernandez",
+        "Derrick Abudu",
+        "Roslyn Ng’eno",
+        "Dirk Willem te Velde",
+        "Faizel Ismail",
+        "Bruce Byiers",
+        "Poorva Karkare",
+        "Mouhamadou Madana Kane",
+        "Dode Seidu",
+        "Paul Baker",
+        "Smita Bheenick",
+        "Fahd Azaroual"
+      ],
+      "summary": "This report assesses early implementation of the AfCFTA Protocol on Investment, examining progress on promotion and facilitation reforms and their potential to strengthen regional textiles and garments value chains, highlighting operational gaps and priorities to boost intra‑African investment.",
+      "pdf": "https://odi.org/documents/10094/Implementation_of_the_AfCFTA_Protocol_on_Investment_FINAL_v1.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.9746
+    },
+    {
+      "url": "https://odi.org/en/publications/undertaking-afcfta-gap-analyses-what-are-we-learning/",
+      "list_title": "Undertaking AfCFTA gap analyses: what are we learning?",
+      "title": "Undertaking AfCFTA gap analyses: what are we learning?",
+      "date": "2026/06/19",
+      "authors": [
+        "Dirk Willem te Velde",
+        "Bernardo Arce Fernandez",
+        "Derrick Abudu",
+        "Yohannes Ayele",
+        "Maximiliano Mendez-Parra",
+        "Roslyn Ng’eno",
+        "Fahd Azaroual",
+        "Paul Baker",
+        "Smita Bheenick",
+        "Damon Bristow",
+        "Mary Chege",
+        "Mag-Teerey Ibrahim"
+      ],
+      "summary": "This report presents the AfCFTA gap analysis methodology and lessons from pilot country assessments, identifying legal and institutional reforms needed to align national investment frameworks with the Protocol on Investment and accelerate practical implementation across Africa.",
+      "pdf": "https://odi.org/documents/10090/Undertaking_AfCFTA_gap_analyses_Final.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.9868
+    },
+    {
+      "url": "https://odi.org/en/publications/gender-equality-and-the-climate-crisis-resolutions-at-the-human-rights-council/",
+      "list_title": "Gender equality and the climate crisis: resolutions at the Human Rights Council",
+      "title": "Gender equality and the climate crisis: resolutions at the Human Rights Council",
+      "date": "2026/06/15",
+      "authors": [
+        "Amy Cano Prentice",
+        "Evie Browne",
+        "Brianna Craft",
+        "Donya Khosravi"
+      ],
+      "summary": "How have gender and climate change been addressed together in the Human Rights Council? This Briefing Paper establishes a baseline for understanding how the gender–climate nexus is addressed within the HRC, providing a foundation for tracking future progress.",
+      "pdf": "https://odi.org/documents/10086/ODI-BP-Gender-Climate-HRC-18Jun.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "brief",
+      "kind_confidence": 0.7461
+    },
+    {
+      "url": "https://odi.org/en/publications/the-value-of-debt-pause-clauses/",
+      "list_title": "The value of debt pause clauses",
+      "title": "The value of debt pause clauses",
+      "date": "2026/06/18",
+      "authors": [
+        "Tom Hart",
+        "Andrea Carvajal"
+      ],
+      "summary": "This report assesses the potential value of broad pause clauses by modelling the liquidity relief using seven middle-income countries as case studies.",
+      "pdf": "https://odi.org/documents/10087/The_value_of_debt_pause_clauses.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.9795
+    },
+    {
+      "url": "https://odi.org/en/publications/eight-considerations-for-adaptation-finance-quality-discussions/",
+      "list_title": "Eight considerations for adaptation finance quality discussions",
+      "title": "Eight considerations for adaptation finance quality discussions",
+      "date": "2026/06/17",
+      "authors": [
+        "Nella Canales",
+        "Lina Adil",
+        "Natalia Daza Niño",
+        "Iyaloo Akuaake"
+      ],
+      "summary": "As climate finance targets increase, this paper asks: what does efficient and strategic allocation of quality finance for adaptation look like?",
+      "pdf": "https://odi.org/documents/10084/Eight_considerations_for_adaptation_finance_quality_discussions_Finance_Working_Group.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "academic",
+      "kind_confidence": 0.5541
+    },
+    {
+      "url": "https://odi.org/en/publications/delivering-climate-resilience-peace-sahel/",
+      "list_title": "Climate action as peace enabler: lessons from the Sahel on delivering peace and social dividends in fragile settings",
+      "title": "Climate action as peace enabler: lessons from the Sahel on delivering peace and social dividends in fragile settings",
+      "date": "2026/06/09",
+      "authors": [
+        "Camille Laville",
+        "Leigh Mayhew",
+        "Maman Noura Idi Mamadou",
+        "Amir Khouzam"
+      ],
+      "summary": "This case study examines the Justice and Stability in the Sahel (JASS) programme in Mali and Niger to explore whether climate action in the Sahel can generate broader peace and social benefits alongside enhanced resilience.",
+      "pdf": "https://odi.org/documents/10080/Climate_action_as_peace_enabler_Lessons_from_the_Sahel.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.6413
+    },
+    {
+      "url": "https://odi.org/en/publications/diversification-of-household-activities-among-cotton-farming-households-in-southern-mali/",
+      "list_title": "Diversification of household activities among cotton-farming households in southern Mali",
+      "title": "Diversification of household activities among cotton-farming households in southern Mali",
+      "date": "2026/05/28",
+      "authors": [
+        "Boukary Barry",
+        "Dansiné Diarra",
+        "Marta Eichsteller",
+        "Kougba Sangaré",
+        "Joseph Sanou",
+        "Steve Wiggins"
+      ],
+      "summary": "This report examines how cotton farmers in Southern Mali are diversifying their incomes in the face of shrinking yields.",
+      "pdf": "https://odi.org/documents/10073/ODI_BCI-Mali-Report-EN-Mar26-Proof02_Final.pdf",
+      "doi": "",
+      "topics": [],
+      "schema_type": "website",
+      "via": "browser",
+      "kind": "report",
+      "kind_confidence": 0.9561
+    }
+  ]
+}
