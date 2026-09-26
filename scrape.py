@@ -8,7 +8,7 @@ role, what it holds, and how on-topic it is; page structure decides whether it i
 
     python scrape.py https://odi.org/en/
 """
-import argparse, heapq, json, os, re, subprocess, sys
+import argparse, heapq, json, os, re, subprocess, sys, threading, time, urllib.robotparser
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urljoin, urlsplit, urlunsplit
@@ -40,15 +40,18 @@ class Browser:
         self.tabs = tabs
 
     def get_many(self, urls):
+        """urls: plain URLs or JSON lines {"url", "more"}; robots.txt-disallowed ones come back as errors."""
+        key = lambda u: json.loads(u)["url"] if u.startswith("{") else u
+        out = {key(u): {"url": key(u), "error": "disallowed by robots.txt"} for u in urls if not allowed(key(u))}
+        urls = [u for u in urls if key(u) not in out]
         if not urls:
-            return {}
+            return out
         if not self.proc:
             self.proc = subprocess.Popen(["node", "render.js"], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                          text=True, encoding="utf-8", bufsize=1,
                                          env={**os.environ, "TABS": str(self.tabs)})
         self.proc.stdin.write("".join(u + "\n" for u in urls))
         self.proc.stdin.flush()
-        out = {}
         for _ in urls:  # answers arrive in completion order
             r = json.loads(self.proc.stdout.readline())
             out[r["url"]] = r
@@ -60,7 +63,42 @@ class Browser:
             self.proc.wait(timeout=60)
 
 
+_robots, _last, _lock = {}, {}, threading.Lock()
+
+
+def allowed(url):
+    """robots.txt says we may fetch this. Unreadable robots.txt (missing, bot-walled) counts as allowed.
+    IGNORE_ROBOTS=1 skips the check, for sites you own or have permission to crawl."""
+    if os.environ.get("IGNORE_ROBOTS") == "1":
+        return True
+    root = "{0.scheme}://{0.netloc}".format(urlsplit(url))
+    with _lock:
+        rp = _robots.get(root)
+    if rp is None:
+        rp = urllib.robotparser.RobotFileParser()
+        try:
+            r = requests.get(root + "/robots.txt", headers={"User-Agent": UA}, timeout=10)
+            rp.parse(r.text.splitlines() if r.status_code == 200 else [])
+        except requests.RequestException:
+            rp.parse([])
+        with _lock:
+            _robots[root] = rp
+    return rp.can_fetch("*", url)
+
+
+def polite(url):
+    """At most one plain request per POLITE_DELAY seconds (default 0.25) per host."""
+    gap, host_ = float(os.environ.get("POLITE_DELAY", "0.25")), urlsplit(url).netloc
+    with _lock:
+        wait = max(0.0, _last.get(host_, 0) + gap - time.time())
+        _last[host_] = time.time() + wait
+    time.sleep(wait)
+
+
 def fetch_requests(url):
+    if not allowed(url):
+        return {"url": url, "error": "disallowed by robots.txt"}
+    polite(url)
     try:
         r = requests.get(url, headers={"User-Agent": UA}, timeout=20)
         return {"url": url, "final_url": r.url, "status": r.status_code, "html": r.text}
@@ -226,7 +264,8 @@ def crawl(start, target, max_pages, max_depth, mode, tabs, brain=None):
             # on-topic, the site has pages beneath it, yet static HTML lists none -> JS-loaded list
             redo = [u for u, (f, p, via) in pages.items() if mode == "auto" and via == "requests"
                     and verdicts[u][0] > 0.5 and kids(p) < 3 and under(norm(f)) >= 2]
-            fixed = {u: r for u, r in browser.get_many(redo).items() if usable(r)}
+            # re-render with layout (CSS) and a short expansion: lazy lists need both
+            fixed = {u: r for u, r in browser.get_many([json.dumps({"url": u, "more": 1}) for u in redo]).items() if usable(r)}
             for u, r in fixed.items():
                 pages[u] = (r["final_url"], parse(r["final_url"], r["html"]), "browser")
                 known.update(pages[u][1]["links"])
@@ -245,7 +284,8 @@ def crawl(start, target, max_pages, max_depth, mode, tabs, brain=None):
                 # ponytail: hand-tuned blend; learn weights once there are labelled sites
                 score = hub * (0.2 + 0.8 * min(1.0, k / 10 + 0.2 * p["paged"]))
                 places.append({"url": final, "via": via, "depth": depth, "role": role, "holds": holds,
-                               "hub": hub, "items": k, "score": round(score, 4), "prio": round(-neg, 4)})
+                               "hub": hub, "items": k, "score": round(score, 4), "prio": round(-neg, 4),
+                               "title": p["title"], "sample": [t for t in p["items"].values() if len(t) > 15][:6]})
                 print(f"[{len(places):3}] {score:.2f} hub={hub:.2f} {role:7} {holds:13} items={k:3} {via:8} {final}",
                       file=sys.stderr)
                 g = p["gpath"]

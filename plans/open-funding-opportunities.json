@@ -1,0 +1,79 @@
+{
+  "target": "funding opportunities",
+  "singular": "funding opportunity",
+  "description": "An open call from a funder (government agency, foundation, or other organization) inviting eligible applicants to submit proposals for grants, contracts, or other financial support; closed or awarded programs are excluded.",
+  "listing_names": [
+    "Open Funding Opportunities",
+    "Active Grants",
+    "Current Funding Calls",
+    "Open Calls for Proposals",
+    "Funding & Grants",
+    "Grant Opportunities",
+    "Open Solicitations",
+    "Available Awards"
+  ],
+  "examples": [
+    "Climate Resilience Innovation Grant 2024",
+    "NSF CAREER: Faculty Early Career Development Program",
+    "Horizon Europe - Clean Hydrogen Partnership 2024"
+  ],
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "description": "The official name of the funding opportunity, usually displayed as a large heading at the top of the page",
+      "example": "Climate Resilience Innovation Grant 2024"
+    },
+    {
+      "name": "funder",
+      "type": "text",
+      "description": "The organization or agency issuing the funding, often shown as a logo or label near the title",
+      "example": "U.S. Environmental Protection Agency"
+    },
+    {
+      "name": "opportunity_id",
+      "type": "text",
+      "description": "The unique identifier or announcement number assigned by the funder, e.g. CFDA, PAR, RFA, or Horizon topic code",
+      "example": "EPA-R3-2024-CLIM-001",
+      "pattern": "[A-Z]{2,5}[- ]?[A-Z0-9]{0,5}[- ]?\\d{2,4}[- ]?\\d{0,4}"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "A multi-paragraph summary of the program's goals and what it funds, usually in the main body of the page",
+      "example": "Funds innovative community-based projects that build resilience to climate-related hazards in coastal and riverine regions."
+    },
+    {
+      "name": "deadline",
+      "type": "date",
+      "description": "The final date by which full applications must be submitted, typically shown in a sidebar or 'Key Dates' section",
+      "example": "2024-09-30"
+    },
+    {
+      "name": "posted_date",
+      "type": "date",
+      "description": "The date the opportunity was first published or opened for applications",
+      "example": "2024-01-15"
+    },
+    {
+      "name": "award_amount",
+      "type": "money",
+      "description": "The maximum or typical funding amount per award, often displayed as a range with a currency symbol (USD, EUR, etc.)",
+      "example": "$250,000",
+      "pattern": "[\\$€£¥]?\\s?[\\d,]+(?:\\.\\d+)?(?:\\s?(?:USD|EUR|GBP|JPY|million|M|K))?"
+    },
+    {
+      "name": "eligibility",
+      "type": "text",
+      "description": "The types of applicants (e.g. universities, nonprofits, individuals) and any geographic restrictions, usually under an 'Eligibility' heading",
+      "example": "Eligible applicants include U.S.-based nonprofit organizations and accredited public universities."
+    },
+    {
+      "name": "program_url",
+      "type": "url",
+      "description": "The official URL to the funder's application portal or full announcement page",
+      "example": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=345678"
+    }
+  ],
+  "prompt": "open funding opportunities"
+}

@@ -1,0 +1,84 @@
+{
+  "target": "patents",
+  "singular": "patent",
+  "description": "A granted or published patent document issued by a patent office (e.g., USPTO, EPO, WIPO), characterized by a unique patent number, an invention title, named inventors, and an assignee; excludes pending applications, design patents' visual galleries, and legal-status news articles about patents.",
+  "listing_names": [
+    "Patents",
+    "Issued Patents",
+    "Granted Patents",
+    "Patent Search",
+    "Patent Publications",
+    "Patent Database",
+    "Published Patent Applications",
+    "Patent Records"
+  ],
+  "examples": [
+    "Method and system for distributed ledger consensus using asynchronous Byzantine fault tolerance",
+    "Wireless power transfer apparatus for electric vehicle charging stations",
+    "Adaptive noise-canceling earbud with biometric authentication"
+  ],
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "description": "Official invention title as displayed in the patent header or 'Bibliographic Data' section",
+      "example": "Method and system for distributed ledger consensus using asynchronous Byzantine fault tolerance"
+    },
+    {
+      "name": "patent_number",
+      "type": "text",
+      "description": "Unique alphanumeric identifier assigned by the patent office, usually in the document header with prefix like US, EP, WO, GB, DE, JP, CN, KR",
+      "example": "US11,234,567 B2",
+      "pattern": "[A-Z]{2}[\\s,]*[0-9][0-9,]{4,}[0-9][A-Z][0-9]?"
+    },
+    {
+      "name": "inventors",
+      "type": "people",
+      "description": "Names of the named inventors, typically listed in the 'Bibliographic data' block separated by semicolons or commas, sometimes with residence city/country",
+      "example": [
+        "Jane Q. Doe",
+        "John A. Smith"
+      ]
+    },
+    {
+      "name": "assignee",
+      "type": "text",
+      "description": "Entity (company or person) to whom the patent rights are assigned, shown next to 'Applicant' or 'Assignee' in the bibliographic data",
+      "example": "Acme Robotics, Inc."
+    },
+    {
+      "name": "filing_date",
+      "type": "date",
+      "description": "Date the application was filed, labeled 'Filing date' or 'Date of filing' in the bibliographic data, formatted as YYYY-MM-DD or DD MMM YYYY",
+      "example": "2021-03-15"
+    },
+    {
+      "name": "publication_date",
+      "type": "date",
+      "description": "Date the patent was granted or published, labeled 'Publication date', 'Issued on', or 'Date of publication', formatted as YYYY-MM-DD",
+      "example": "2023-09-26"
+    },
+    {
+      "name": "abstract",
+      "type": "text",
+      "description": "Short paragraph summarizing the invention, typically the first paragraph on the patent page under the heading 'Abstract'",
+      "example": "A consensus mechanism for distributed ledger networks that tolerates asynchronous Byzantine failures by partitioning node roles into..."
+    },
+    {
+      "name": "ipc_classification",
+      "type": "list",
+      "description": "International Patent Classification codes shown as strings such as 'H04L 9/00' or 'G06F 17/00', grouped under 'IPC' or 'Classification' on the page",
+      "example": [
+        "H04L 9/00",
+        "G06F 17/00"
+      ]
+    },
+    {
+      "name": "document_url",
+      "type": "url",
+      "description": "Link to the full patent PDF or original filing page, labeled 'Download PDF', 'Full document', or shown as the 'Espacenet' / 'Google Patents' canonical URL",
+      "example": "https://patents.uspto.gov/patent/US11234567B2.pdf"
+    }
+  ],
+  "prompt": "patents"
+}

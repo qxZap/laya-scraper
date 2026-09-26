@@ -1,0 +1,87 @@
+{
+  "target": "publications",
+  "singular": "publication",
+  "description": "A publication is a scholarly work such as a research paper, journal article, book chapter, conference paper, or technical report with a title, one or more authors, a publication date, and often a DOI or link to the full text; it does not include blog posts, press releases, news articles, or unpublished manuscripts.",
+  "listing_names": [
+    "Publications",
+    "Papers",
+    "Research",
+    "Articles",
+    "Journal Articles",
+    "Working Papers",
+    "Scholarship",
+    "Reports"
+  ],
+  "examples": [
+    "Deep Learning Approaches to Natural Language Processing: A Survey",
+    "Climate Change and Agricultural Productivity: Evidence from Sub-Saharan Africa",
+    "Quantum Error Correction in Surface Codes: Recent Advances and Open Problems"
+  ],
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "description": "The full title of the publication, usually displayed as a prominent heading or link on the item's page",
+      "example": "Deep Learning Approaches to Natural Language Processing: A Survey"
+    },
+    {
+      "name": "authors",
+      "type": "people",
+      "description": "The list of authors, typically shown as comma-separated names below the title, sometimes with affiliations",
+      "example": [
+        "Jane M. Smith",
+        "Robert L. Chen",
+        "Aisha K. Patel"
+      ]
+    },
+    {
+      "name": "publication_date",
+      "type": "date",
+      "description": "The date the work was published, often displayed as a year, full date, or month/year near the citation block",
+      "example": "2023-09-15"
+    },
+    {
+      "name": "journal_or_venue",
+      "type": "text",
+      "description": "The name of the journal, conference proceedings, or publisher where the work appeared, often shown in italics",
+      "example": "Journal of Machine Learning Research"
+    },
+    {
+      "name": "doi",
+      "type": "text",
+      "description": "Digital Object Identifier, a persistent identifier usually displayed as 'DOI: 10.xxxx/xxxxx' or as a clickable link",
+      "example": "10.1145/3592979.3593401",
+      "pattern": "^10\\.\\d{4,9}/[\\w./:()<>\\-;]+$"
+    },
+    {
+      "name": "abstract",
+      "type": "text",
+      "description": "A paragraph summary of the publication's content, typically labeled 'Abstract' and located below the citation",
+      "example": "We present a comprehensive survey of deep learning methods applied to natural language processing tasks, covering architectures, training techniques, and benchmark performance over the past decade."
+    },
+    {
+      "name": "pdf_url",
+      "type": "url",
+      "description": "Direct link to a downloadable PDF of the full paper, usually labeled 'PDF' or displayed as a button/icon",
+      "example": "https://example.org/papers/smith2023deep.pdf"
+    },
+    {
+      "name": "keywords",
+      "type": "list",
+      "description": "Subject keywords or tags associated with the publication, often displayed as a comma-separated list or tag chips",
+      "example": [
+        "deep learning",
+        "NLP",
+        "neural networks",
+        "transformers"
+      ]
+    },
+    {
+      "name": "citation_count",
+      "type": "number",
+      "description": "Number of times the publication has been cited by other works, often shown alongside an icon or labeled 'Cited by'",
+      "example": 142
+    }
+  ],
+  "prompt": "publications"
+}

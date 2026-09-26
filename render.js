@@ -6,6 +6,8 @@ const { connect } = require('puppeteer-real-browser');
 const readline = require('readline');
 
 const TABS = +process.env.TABS || 4;
+// we only read the DOM. CSS is skipped too, except on lists being expanded: lazy lists and "load more" need layout
+const SKIP_TYPES = new Set(['image', 'media', 'font']);
 const CHALLENGE = /just a moment|attention required|checking your browser|verify you are human/i;
 const idle = page => page.waitForNetworkIdle({ idleTime: 500, timeout: 6000 }).catch(() => {});
 
@@ -32,7 +34,7 @@ async function expand(page, times) {
       return !!el;
     });
     await page.bringToFront();
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.evaluate(() => window.scrollTo(0, (document.scrollingElement || document.documentElement).scrollHeight));
     await idle(page);
     const after = await page.evaluate(() => document.querySelectorAll('a[href]').length);
     if (after <= before) break;
@@ -55,12 +57,23 @@ async function expand(page, times) {
   // Chrome only fully renders the front tab of a window, so lazy lists in background tabs never load.
   // Each "tab" is therefore its own off-screen window: all render, and they still share cookies.
   const cdp = await browser.target().createCDPSession();
-  async function newWindow() {
+  async function newWindow(keepCss) {
     const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank', newWindow: true });
     const { windowId } = await cdp.send('Browser.getWindowForTarget', { targetId });
     await cdp.send('Browser.setWindowBounds', { windowId, bounds: { left: -32000, top: -32000, width: 1280, height: 900 } });
     const target = await browser.waitForTarget(t => t._targetId === targetId);
-    return target.page();
+    const page = await target.page();
+    if (process.env.LOAD_ALL !== '1') {
+      // challenge resources always load, or the check can fail
+      await page.setRequestInterception(true);
+      page.on('request', r => {
+        if (r.isInterceptResolutionHandled()) return;
+        const t = r.resourceType();
+        const skip = (SKIP_TYPES.has(t) || t === 'stylesheet' && !keepCss) && !/challenges\.cloudflare\.com|\/cdn-cgi\//.test(r.url());
+        (skip ? r.abort() : r.continue()).catch(() => {});
+      });
+    }
+    return page;
   }
   let active = 0;
   const queue = [];
@@ -73,26 +86,32 @@ async function expand(page, times) {
   }
 
   async function renderOnce({ url, more = 0 }) {
-    const page = await newWindow();
+    const page = await newWindow(more > 0);
     try {
       let res, challenged = false;
+      // mid-challenge the page navigates under us; "can't read it right now" means "still challenging"
+      const blocked = async () => CHALLENGE.test(await page.title().catch(() => 'just a moment'));
       // intermittently a challenge doesn't clear; a fresh load (with the cookies earned so far) usually does
-      for (let attempt = 0; attempt < 3 && (!res || CHALLENGE.test(await page.title())); attempt++) {
-        res = await page.goto(url, { waitUntil: 'networkidle2', timeout: 45000 });
+      for (let attempt = 0; attempt < 3 && (!res || await blocked()); attempt++) {
+        res = await page.goto(url, { waitUntil: 'networkidle2', timeout: 45000 }).catch(e => {
+          if (!/context was destroyed|navigat|detached/i.test(String(e))) throw e;
+          return null;
+        }) || res;
         // the challenge can clear inside goto; its 403 is flagged by Cloudflare, not a real error
         if (res && res.headers()['cf-mitigated']) challenged = true;
-        for (let i = 0; i < 12 && CHALLENGE.test(await page.title()); i++) {
+        for (let i = 0; i < 16 && await blocked(); i++) {
           challenged = true;
-          if (i % 4 === 0) await page.bringToFront(); // challenge widgets want a focused tab
+          if (i % 4 === 0) await page.bringToFront().catch(() => {}); // challenge widgets want a focused tab
           res = (await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 1500 }).catch(() => null)) || res;
         }
       }
-      if (challenged && !CHALLENGE.test(await page.title())) res = null; // passed; the 403 was the challenge itself
+      await page.waitForNetworkIdle({ idleTime: 500, timeout: 8000 }).catch(() => {});
+      if (challenged && !await blocked()) res = null; // passed; the 403 was the challenge itself
       // lazy lists often render on scroll
-      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await page.evaluate(() => window.scrollTo(0, (document.scrollingElement || document.documentElement).scrollHeight)).catch(() => {});
       await new Promise(r => setTimeout(r, 800));
       const grown = more ? await expand(page, more) : null;
-      const status = CHALLENGE.test(await page.title()) ? 403 : res ? res.status() : 200;
+      const status = await blocked() ? 403 : res ? res.status() : 200;
       return { url, final_url: page.url(), status, title: await page.title(), html: await page.content(), more: grown };
     } catch (e) {
       return { url, error: String(e) };

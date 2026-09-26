@@ -1,0 +1,56 @@
+{
+  "selectors": {
+    "title": [
+      "h1#skipnav-target"
+    ],
+    "funder": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells > a.ukri-funder__link"
+    ],
+    "description": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-content.single-opportunity__entry-content > div.description"
+    ],
+    "deadline": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells || Closing date:"
+    ],
+    "posted_date": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells || Publication date:"
+    ],
+    "award_amount": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells || Maximum award:",
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells || Award range:"
+    ],
+    "eligibility": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.govuk-accordion.ukri-accordion > div.govuk-accordion__section > div.govuk-accordion__section-content > p"
+    ],
+    "program_url": [
+      "meta:og:url"
+    ]
+  },
+  "fields": {
+    "title": "validated (4/4 correct)",
+    "funder": "validated (4/4 correct)",
+    "opportunity_id": "absent (not shown on sample pages)",
+    "description": "validated (4/4 correct)",
+    "deadline": "validated (4/4 correct)",
+    "posted_date": "validated (4/4 correct)",
+    "award_amount": "validated (4/4 correct)",
+    "eligibility": "validated (4/4 correct)",
+    "program_url": "validated (4/4 correct)"
+  },
+  "coverage_checked": {
+    "award_amount": "2026-09-26",
+    "eligibility": "2026-09-26"
+  },
+  "fields_in_plan": [
+    "title",
+    "funder",
+    "opportunity_id",
+    "description",
+    "deadline",
+    "posted_date",
+    "award_amount",
+    "eligibility",
+    "program_url"
+  ],
+  "validated_on": "2026-09-25"
+}

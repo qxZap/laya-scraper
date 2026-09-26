@@ -1,0 +1,42 @@
+{
+  "selectors": {
+    "title": [
+      "div.page-title > div.page-title__column.page-title__heading > div.gem-c-heading > h1.gem-c-heading__text.govuk-heading-xl"
+    ],
+    "publication_date": [
+      "kv:div.page-title > div.page-title__column.page-title__lead > div.gem-c-metadata.gem-c-metadata--border-top > dl.gem-c-metadata__list || Published"
+    ],
+    "summary": [
+      "div.govuk-grid-row > div.govuk-grid-column-two-thirds > section.gem-c-summary-banner > p.gem-c-summary-banner__text"
+    ],
+    "topics": [
+      "meta:govuk:taxon-slugs"
+    ],
+    "institution": [
+      "meta:govuk:primary-publishing-organisation"
+    ]
+  },
+  "fields": {
+    "title": "validated (4/4 correct)",
+    "authors": "unreliable ({'missed': 1, 'correct': 2, 'wrong': 1})",
+    "publication_date": "validated (4/4 correct)",
+    "summary": "validated (3/4 correct)",
+    "topics": "validated (4/4 correct)",
+    "institution": "validated (4/4 correct)",
+    "pdf_url": "unreliable ({'wrong': 1, 'absent': 3})",
+    "page_count": "unreliable ({'missed': 1, 'absent': 3})",
+    "doi": "absent (not shown on sample pages)"
+  },
+  "fields_in_plan": [
+    "title",
+    "authors",
+    "publication_date",
+    "summary",
+    "topics",
+    "institution",
+    "pdf_url",
+    "page_count",
+    "doi"
+  ],
+  "validated_on": "2026-09-25"
+}

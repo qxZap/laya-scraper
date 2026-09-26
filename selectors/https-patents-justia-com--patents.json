@@ -1,0 +1,54 @@
+{
+  "selectors": {
+    "title": [
+      "div#main-content > div.primary-content-wrapper > div.primary-content > div.wrapper.jcard > div.wrapper > div.title-wrapper > h1"
+    ],
+    "patent_number": [
+      "kv:div#history > div.wrap || Patent number",
+      "kv:div#history > div.wrap || Publication number"
+    ],
+    "inventors": [
+      "kv:div#history > div.wrap || Inventors"
+    ],
+    "assignee": [
+      "kv:div#history > div.wrap || Assignee",
+      "kv:div#history > div.wrap || Applicant"
+    ],
+    "filing_date": [
+      "kv:div#history > div.wrap || Filed"
+    ],
+    "publication_date": [
+      "kv:div#history > div.wrap || Date of Patent",
+      "kv:div#history > div.wrap || Publication Date"
+    ],
+    "abstract": [
+      "div#abstract > p"
+    ],
+    "ipc_classification": [
+      "kv:div#classifications > div.wrap || International Classification"
+    ]
+  },
+  "fields": {
+    "title": "validated (4/4 correct)",
+    "patent_number": "validated (4/4 correct)",
+    "inventors": "validated (4/4 correct)",
+    "assignee": "validated (4/4 correct)",
+    "filing_date": "validated (4/4 correct)",
+    "publication_date": "validated (4/4 correct)",
+    "abstract": "validated (4/4 correct)",
+    "ipc_classification": "validated (4/4 correct)",
+    "document_url": "unreliable ({'missed': 3, 'absent': 1})"
+  },
+  "fields_in_plan": [
+    "title",
+    "patent_number",
+    "inventors",
+    "assignee",
+    "filing_date",
+    "publication_date",
+    "abstract",
+    "ipc_classification",
+    "document_url"
+  ],
+  "validated_on": "2026-09-26"
+}

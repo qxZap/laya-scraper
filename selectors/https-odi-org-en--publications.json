@@ -1,0 +1,46 @@
+{
+  "selectors": {
+    "title": [
+      "header.header > div.contained-width > div.header__content > h1.header__title"
+    ],
+    "authors": [
+      "header.header > div.contained-width > div.header__content > div.header__meta-container > div.header__meta > p.header__author"
+    ],
+    "publication_date": [
+      "header.header > div.contained-width > div.header__content > div.header__meta-container > div.header__meta > time.header__date"
+    ],
+    "abstract": [
+      "div.article__content > div.article__content__inner > div.article__main > article.article__body > div.w-block-standfirst.block-standfirst > div.standfirst > div.rich-text > p",
+      "div.article__content > div.article__content__inner > div.article__main > article.article__body > div.w-block-rich_text.block-rich_text > div.rich-text > p"
+    ],
+    "pdf_url": [
+      "meta:citation_pdf_url"
+    ]
+  },
+  "fields": {
+    "title": "validated (4/4 correct)",
+    "authors": "validated (4/4 correct)",
+    "publication_date": "validated (4/4 correct)",
+    "journal_or_venue": "absent (not shown on sample pages)",
+    "doi": "absent (not shown on sample pages)",
+    "abstract": "validated (4/4 correct)",
+    "pdf_url": "validated (3/4 correct)",
+    "keywords": "absent (not shown on sample pages)",
+    "citation_count": "absent (not shown on sample pages)"
+  },
+  "coverage_checked": {
+    "abstract": "2026-09-26"
+  },
+  "fields_in_plan": [
+    "title",
+    "authors",
+    "publication_date",
+    "journal_or_venue",
+    "doi",
+    "abstract",
+    "pdf_url",
+    "keywords",
+    "citation_count"
+  ],
+  "validated_on": "2026-09-25"
+}

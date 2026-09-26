@@ -1,0 +1,49 @@
+{
+  "selectors": {
+    "title": [
+      "div.usa-section > div.grid-container-widescreen > div.grid-row.grid-gap-lg > div > h1.dataset-title"
+    ],
+    "description": [
+      "div.usa-section > div.grid-container-widescreen > div.grid-row.grid-gap-lg > div > div.dataset-description"
+    ],
+    "publisher": [
+      "div.usa-section > div.grid-container-widescreen > div.grid-row.grid-gap-lg > div > div.dataset-meta > strong"
+    ],
+    "publication_date": [
+      "div.usa-section > div.grid-container-widescreen > div.grid-row.grid-gap-lg > div > details > section > table.metadata-table > tbody > tr > td || issued"
+    ],
+    "license": [
+      "div.usa-section > div.grid-container-widescreen > div.grid-row.grid-gap-lg > div > details > section > table.metadata-table > tbody > tr > td || license"
+    ],
+    "download_url": [
+      "div.usa-section > div.grid-container-widescreen > div.grid-row.grid-gap-lg > div > div.resources-section > ul.resources-list.resources-list--main > li.resources-list__item.resources-list__item--main > div.resources-list__actions > a.usa-button.usa-button--small"
+    ]
+  },
+  "fields": {
+    "title": "validated (4/4 correct)",
+    "description": "validated (4/4 correct)",
+    "publisher": "validated (4/4 correct)",
+    "publication_date": "validated (3/4 correct)",
+    "last_updated": "unreliable ({'missed': 3, 'wrong': 1})",
+    "formats": "unreliable ({'correct': 1, 'wrong': 3})",
+    "license": "validated (3/4 correct)",
+    "download_url": "validated (4/4 correct)",
+    "doi": "unreliable ({'correct': 1, 'wrong': 3})"
+  },
+  "coverage_checked": {
+    "publication_date": "2026-09-26",
+    "license": "2026-09-26"
+  },
+  "fields_in_plan": [
+    "title",
+    "description",
+    "publisher",
+    "publication_date",
+    "last_updated",
+    "formats",
+    "license",
+    "download_url",
+    "doi"
+  ],
+  "validated_on": "2026-09-25"
+}

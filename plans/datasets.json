@@ -1,0 +1,84 @@
+{
+  "target": "datasets",
+  "singular": "dataset",
+  "description": "A structured or semi-structured collection of data published for reuse, typically available as downloadable files (CSV, JSON, XML, etc.) or via an API; raw blog posts, articles, or single static documents do not count.",
+  "listing_names": [
+    "Datasets",
+    "Data Catalog",
+    "Data Portal",
+    "Open Data",
+    "Browse Data",
+    "Data Resources",
+    "Catalog",
+    "Data Sets"
+  ],
+  "examples": [
+    "Monthly Average Temperature by State, 1901-2023",
+    "COVID-19 Cases and Deaths by County, United States",
+    "Global Forest Cover Change 2000-2023",
+    "U.S. Census Population Estimates 2020-2023",
+    "EPA Air Quality Measurements - Monitoring Stations"
+  ],
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "description": "The dataset's name as displayed at the top of its page, usually a short descriptive phrase.",
+      "example": "Monthly Average Temperature by State, 1901-2023"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "A short paragraph summarizing what the dataset contains, its scope, and how it was collected; usually in plain prose below the title.",
+      "example": "State-level monthly mean temperature values (degrees F) for the contiguous United States, compiled from NOAA station data."
+    },
+    {
+      "name": "publisher",
+      "type": "text",
+      "description": "The organization or agency that authored or hosts the dataset, often shown as a logo or 'Source' label.",
+      "example": "National Oceanic and Atmospheric Administration (NOAA)"
+    },
+    {
+      "name": "publication_date",
+      "type": "date",
+      "description": "The date the dataset was first released or published, commonly labeled 'Release Date' or 'Published'.",
+      "example": "2023-09-14"
+    },
+    {
+      "name": "last_updated",
+      "type": "date",
+      "description": "The date the dataset was most recently revised; often labeled 'Last Updated', 'Modified', or 'Refreshed'.",
+      "example": "2024-03-22"
+    },
+    {
+      "name": "formats",
+      "type": "list",
+      "description": "The available file formats for download, typically shown as badges or links (e.g., CSV, JSON, XML, XLSX).",
+      "example": [
+        "CSV",
+        "JSON",
+        "XML"
+      ]
+    },
+    {
+      "name": "license",
+      "type": "text",
+      "description": "The usage license under which the dataset is released (e.g., CC-BY 4.0, Public Domain, ODbL), often shown with a license name or icon.",
+      "example": "Creative Commons Attribution 4.0 (CC-BY 4.0)"
+    },
+    {
+      "name": "download_url",
+      "type": "url",
+      "description": "Direct link to the primary downloadable file or landing page for the dataset, usually labeled 'Download' or shown as the resource URL.",
+      "example": "https://www.example.gov/data/temperature/state-monthly-1901-2023.csv"
+    },
+    {
+      "name": "doi",
+      "type": "text",
+      "description": "A Digital Object Identifier assigned to the dataset, often labeled 'DOI' and presented as a clickable link.",
+      "example": "10.5066/F7P26W12",
+      "pattern": "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$"
+    }
+  ],
+  "prompt": "datasets"
+}

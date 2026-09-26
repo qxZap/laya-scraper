@@ -1,0 +1,86 @@
+{
+  "target": "policy papers",
+  "singular": "policy paper",
+  "description": "A substantive, authored analysis or recommendation on a public policy issue, typically issued by a think tank, research institute, government body, or NGO; excludes short news articles, blog posts, press releases, and opinion columns.",
+  "listing_names": [
+    "Policy Papers",
+    "Publications",
+    "Research & Reports",
+    "Policy Briefs",
+    "Reports",
+    "Research",
+    "White Papers",
+    "Analysis"
+  ],
+  "examples": [
+    "Reforming Carbon Pricing in Emerging Economies",
+    "The Future of EU Enlargement in the Western Balkans",
+    "Strengthening Cybersecurity Resilience in Critical Infrastructure"
+  ],
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "description": "The main title of the policy paper, usually displayed as a large heading at the top of the page",
+      "example": "Reforming Carbon Pricing in Emerging Economies"
+    },
+    {
+      "name": "authors",
+      "type": "people",
+      "description": "Authors or contributors, typically shown below the title, sometimes with affiliations and links to bio pages",
+      "example": [
+        "Jane Smith",
+        "Carlos Mendes",
+        "Anna Kowalski"
+      ]
+    },
+    {
+      "name": "publication_date",
+      "type": "date",
+      "description": "The official publication or release date, often shown near the title or in a metadata block; commonly written as 'Month DD, YYYY' or 'DD Month YYYY'",
+      "example": "March 14, 2024"
+    },
+    {
+      "name": "summary",
+      "type": "text",
+      "description": "A short abstract or executive summary describing the paper's argument and findings, usually a paragraph or two near the top",
+      "example": "This paper examines how carbon pricing mechanisms can be adapted to the economic realities of emerging markets, drawing on case studies from Brazil, Indonesia, and South Africa."
+    },
+    {
+      "name": "topics",
+      "type": "list",
+      "description": "Subject tags or policy areas the paper belongs to, shown as chips or links in a sidebar or header",
+      "example": [
+        "Climate Policy",
+        "Energy",
+        "Economic Development"
+      ]
+    },
+    {
+      "name": "institution",
+      "type": "text",
+      "description": "The publishing think tank, research center, or organization, often part of the site name or in a 'Published by' line",
+      "example": "Center for Global Economic Policy"
+    },
+    {
+      "name": "pdf_url",
+      "type": "url",
+      "description": "Direct link to the full PDF document, typically labeled 'Download PDF', 'Read the full report', or a paper icon",
+      "example": "https://example.org/wp-content/uploads/2024/03/carbon-pricing-emerging-economies.pdf"
+    },
+    {
+      "name": "page_count",
+      "type": "number",
+      "description": "Number of pages in the full document, sometimes shown in metadata or in the PDF filename (e.g. report-32pp.pdf)",
+      "example": 48
+    },
+    {
+      "name": "doi",
+      "type": "text",
+      "description": "Digital Object Identifier assigned to the paper, when applicable; appears in citation blocks or footer metadata",
+      "example": "10.1234/cgep.2024.0314",
+      "pattern": "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$"
+    }
+  ],
+  "prompt": "policy papers"
+}
