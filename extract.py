@@ -55,7 +55,8 @@ class Node:
 
     def state(self):
         if self.el is None:
-            kind = "Labelled fact on the page" if self.sel.startswith("kv:") else "Page metadata"
+            kind = ("Labelled fact on the page" if self.sel.startswith("kv:") else
+                    "Text on the page" if self.sel.startswith("re:") else "Page metadata")
             return f"{kind}: {self.text[:400]}"
         return f"Element: {self.attrs}\nText: {self.text[:350]}"
 
@@ -159,7 +160,9 @@ def page_tree(html, url="", item_pattern=""):
     for t in soup.select(CHROME):
         t.decompose()
     for t in soup.find_all(True):
-        if not t.decomposed and t.attrs is not None and t.name not in ("html", "body", "main") and                 CHROME_NAME.search(" ".join([t.get("id") or ""] + (t.get("class") or []))):
+        if not t.decomposed and t.attrs is not None and t.name not in ("html", "body", "main") and \
+                CHROME_NAME.search(" ".join([t.get("id") or ""] + (t.get("class") or []))) and \
+                t.find(["main", "article", "h1"]) is None:  # "content-sidebar-wrap" holds the whole page: keep it
             t.decompose()
     if item_pattern:
         me = norm(url)
@@ -194,7 +197,7 @@ def to_iso(s):
     m = re.search(r"(\d{4})-(\d{2})-(\d{2})", s) or re.search(r"(\d{4})/(\d{2})/(\d{2})", s)
     if m:
         return "-".join(m.groups())
-    m = re.search(r"(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})\.?,?\s+(\d{4})", s)
+    m = re.search(r"(\d{1,2})(?:st|nd|rd|th)?[\s/-]+([A-Za-z]{3,9})\.?,?[\s/-]+(\d{4})", s)  # 17 Sep 2026, 28-Jul-2026
     if m and m.group(2)[:3].lower() in MONTHS:
         return f"{m.group(3)}-{MONTHS.index(m.group(2)[:3].lower()) + 1:02}-{int(m.group(1)):02}"
     m = re.search(r"([A-Za-z]{3,9})\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})", s)
@@ -395,6 +398,37 @@ class LLMUnavailable(RuntimeError):
     """The LLM could not be reached (rate limit, outage): selectors cannot be learned or validated."""
 
 
+PATTERN_PROMPT = """We extract {what} records from item pages. These fields could not be tied to a single page element,
+probably because the value is written inside the text (for example "Deadline: 28-Jul-2026 The council is ..."):
+{fields}
+
+Below is the main text of two item pages of the same site, one line per text block. For each field write ONE Python regular expression with
+exactly one capture group that captures the value on both pages, and would on other pages of this site too.
+Anchor it on nearby words the site uses consistently (labels such as "Deadline:", "Donor:", "Amount:"), be lenient
+about spacing and case (you may start with (?i)), and end the capture before the next label or sentence.
+Use null when the value is not in the text.
+{feedback}
+PAGE A ({url_a})
+{text_a}
+
+PAGE B ({url_b})
+{text_b}
+
+Return JSON: {{"<field name>": "<regex or null>", ...}}"""
+
+
+def page_text(tree, limit=20000):
+    """The main content as text, one line per text block (as on the page, so "Deadline: 9 October 2026" ends at
+    the line break): what text patterns run over, and what the LLM saw when writing them."""
+    lines = (clean(s) for s in tree[2].get_text("\n").splitlines())
+    return "\n".join(s for s in lines if s)[:limit]
+
+
+def passes(c):
+    """A field's grading on the sample pages is good enough to trust its selector everywhere."""
+    return c["correct"] and not c["wrong"] and c["missed"] <= 1 or c["correct"] >= 3 and c["wrong"] <= 1 and c["missed"] <= 1
+
+
 class Extractor:
     def __init__(self, brain, plan, beam=2, max_depth=10, use_llm=True):
         self.brain, self.plan, self.beam, self.max_depth, self.use_llm = brain, plan, beam, max_depth, use_llm
@@ -486,6 +520,13 @@ class Extractor:
 
     def find(self, sel, tree):
         root, soup, content = tree
+        if sel.startswith("re:"):  # a text pattern over the main content; group 1 is the value
+            try:
+                m = re.search(sel[3:], page_text(tree))
+            except re.error:
+                return None
+            v = clean(m.group(1) if m and m.groups() else m.group(0) if m else "")[:500]
+            return Node(v, sel=sel, value=[v]) if v else None
         if sel.startswith("kv:"):
             path, _, label = sel[3:].partition(" || ")
             try:
@@ -600,7 +641,7 @@ class Extractor:
             failing = []
             for f in fields:
                 c, name = tally[f["name"]], f["name"]
-                if c["correct"] and not c["wrong"] and c["missed"] <= 1 or c["correct"] >= 3 and c["wrong"] <= 1 and c["missed"] <= 1:
+                if passes(c):
                     status[name] = f"validated ({c['correct']}/{len(sample)} correct)"
                 elif c["absent"] + c["correct"] == len(sample) and not c["correct"]:
                     status[name] = "absent (not shown on sample pages)"
@@ -623,6 +664,10 @@ class Extractor:
             for name, new in self.llm_selectors(trees, bad_pages, failing, log, feedback).items():
                 old = sels.get(name, [])
                 sels[name] = [new] if tally[name]["wrong"] or not old else old + [s for s in [new] if s not in old]
+        if not known:  # fields that failed as elements may live inside the prose: try text patterns
+            prose = [f for f in fields if status.get(f["name"], "").startswith("unreliable")]
+            if prose:
+                self.text_patterns(prose, sels, status, trees, sample, log)
         for f in fields:
             if not status.get(f["name"], "").startswith("validated"):
                 sels.pop(f["name"], None)
@@ -651,6 +696,60 @@ class Extractor:
                 if n is not None and p >= 0.5:
                     out[u][f["name"]], out[u]["_confidence"][f["name"]], out[u]["_how"][f["name"]] = value_of(n, f, u), round(p, 3), "guess"
         return out, {"selectors": sels, "fields": status, "changed": changed, "coverage_checked": checked}
+
+    def llm_patterns(self, trees, pages, fields, log, feedback=""):
+        """The LLM writes one text pattern per field from two pages' main text -> {field: "re:<pattern>"}."""
+        from llm import chat_json
+        a, b = (pages * 2)[:2]
+        try:
+            answer = chat_json(PATTERN_PROMPT.format(
+                what=self.what, feedback=feedback, url_a=a, url_b=b,
+                text_a=page_text(trees[a], 5000), text_b=page_text(trees[b], 5000),
+                fields="\n".join(f"- {f['name']} ({f['type']}): {f['description']}. Example: {f.get('example', '')}"
+                                 for f in fields)))
+        except Exception as e:
+            log(f"  LLM text patterns failed ({e})")
+            return {}
+        out = {}
+        for f in fields:
+            pat = answer.get(f["name"])
+            try:
+                if isinstance(pat, str) and re.compile(pat).groups >= 1:
+                    out[f["name"]] = "re:" + pat
+            except re.error:
+                pass
+        return out
+
+    def text_patterns(self, prose, sels, status, trees, sample, log, rounds=1):
+        """Fields that failed as page elements get a text pattern, graded on the samples like any selector,
+        with `rounds` repair attempts. Only patterns that pass are kept."""
+        log(f"  text patterns for {', '.join(f['name'] for f in prose)} ...")
+        feedback, pages = "", sample[:2]
+        for rnd in range(rounds + 1):
+            trial = self.llm_patterns(trees, pages, prose, log, feedback)
+            if not trial:
+                return
+            tally, examples = self.grade({**sels, **{k: [v] for k, v in trial.items()}}, trees, sample)
+            still, notes = [], []
+            for f in prose:
+                name = f["name"]
+                if name in trial and passes(tally[name]):
+                    sels[name] = [trial[name]]
+                    status[name] = f"validated as text pattern ({tally[name]['correct']}/{len(sample)} correct)"
+                    log(f"    {name:20} text pattern ok: {trial[name][3:][:70]}")
+                else:
+                    still.append(f)
+                    notes += [f"- {name}: pattern {trial.get(name, 'null')[3:][:80]!r} gave "
+                              f"{json.dumps(v, ensure_ascii=False)[:80]} on {u}, judged {verdict}"
+                              for u, verdict, v in examples[name][:2]]
+            prose = still
+            if not prose:
+                return
+            bad = [u for u, _ in Counter(u for f in prose for u, _, _ in examples[f["name"]]).most_common(2)]
+            pages = (bad + [u for u in sample if u not in bad])[:2]
+            feedback = "\nA previous attempt failed on these fields:\n" + "\n".join(notes) + "\n"
+        for f in prose:
+            log(f"    {f['name']:20} no reliable text pattern either")
 
     def coverage(self, sels, trees, urls, sample, log, checked, min_share=0.8, recheck_days=30):
         """A field validated on the samples but empty on many other pages usually has a second form there

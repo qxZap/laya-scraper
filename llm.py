@@ -79,7 +79,7 @@ def _chat(prompt, system, max_tokens):
     return re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()  # reasoning models think out loud
 
 
-def chat_json(prompt, system="", attempts=2):
+def chat_json(prompt, system="", attempts=3):
     """chat() that must return one JSON value; tolerates ```json fences and chatter around it.
     Reasoning models can spend the whole output budget thinking on a big prompt and answer nothing, so the
     budget is generous and an empty or unparseable answer is asked again."""

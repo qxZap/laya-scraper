@@ -1,13 +1,18 @@
 {
   "selectors": {
     "title": [
-      "ld:headline"
+      "article.post.type-post > header.entry-header > h1.entry-title"
     ],
-    "summary": [
-      "meta:og:description"
+    "amount": [
+      "article.post.type-post > div.entry-content > ul > li",
+      "article.post.type-post > div.entry-content > ul > li > strong || Grant size:"
     ],
-    "posted_date": [
-      "meta:article:published_time"
+    "application_deadline": [
+      "re:(?:Application close date|Deadline):\\s*(\\d{1,2} \\w+ \\d{4})",
+      "article.post.type-post > div.entry-content > ul > li > strong || Deadline to apply:"
+    ],
+    "application_url": [
+      "article.post.type-post > div.entry-content > ol > li > a || Read the official guidelines."
     ],
     "categories": [
       "ld:articleSection"
@@ -15,17 +20,21 @@
   },
   "fields": {
     "title": "validated (4/4 correct)",
-    "funder": "unreliable ({'wrong': 4})",
-    "summary": "validated (4/4 correct)",
-    "amount": "unreliable ({'absent': 2, 'missed': 2})",
-    "application_deadline": "unreliable ({'wrong': 4})",
-    "posted_date": "validated (4/4 correct)",
-    "eligibility": "unreliable ({'absent': 2, 'missed': 2})",
+    "funder": "unreliable ({'wrong': 2, 'correct': 2})",
+    "summary": "unreliable ({'correct': 2, 'wrong': 2})",
+    "amount": "validated (1/4 correct)",
+    "application_deadline": "validated as text pattern (3/4 correct)",
+    "posted_date": "unreliable ({'correct': 1, 'absent': 1, 'missed': 2})",
+    "eligibility": "unreliable ({'wrong': 4})",
     "grant_id": "absent (not shown on sample pages)",
-    "application_url": "absent (not shown on sample pages)",
+    "application_url": "validated (1/4 correct)",
     "categories": "validated (4/4 correct)"
   },
-  "coverage_checked": {},
+  "coverage_checked": {
+    "amount": "2026-09-28",
+    "application_deadline": "2026-09-28",
+    "application_url": "2026-09-28"
+  },
   "fields_in_plan": [
     "title",
     "funder",

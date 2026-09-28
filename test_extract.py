@@ -70,6 +70,23 @@ A = page_tree('<main><dl><dt>Maximum award:</dt><dd>£100,000</dd></dl></main>')
 B = page_tree('<main><dl><dt>Total fund:</dt><dd>£2 million</dd></dl></main>')
 sels = {"award": ["dl > dd || Maximum award:", "dl > dd || Total fund:"]}
 assert ex.record(sels, A, "")["award"] == "£100,000" and ex.record(sels, B, "")["award"] == "£2 million"
+
+# text patterns: values written inside prose ("Deadline: 28-Jul-2026 The council ...")
+from extract import page_text, passes
+from collections import Counter
+PROSE = page_tree("<main><p>Deadline: 28-Jul-2026 The Victorian Veterans Council offers grants of up to AUD 50,000 "
+                  "to not-for-profits.</p></main>")
+dl = Extractor.find(None, r"re:(?i)deadline:\s*([0-9]{1,2}-[A-Za-z]{3}-[0-9]{4})", PROSE)
+assert dl.value == ["28-Jul-2026"] and value_of(dl, T(type="date"), "") == "2026-07-28" and fits(dl, T(type="date"), "", strict=False)
+amt = Extractor.find(None, r"re:up to ((?:AUD|USD|EUR|£|\$)\s?[\d,]+)", PROSE)
+assert amt.value == ["AUD 50,000"] and fits(amt, T(type="money"), "", strict=False)
+assert Extractor.find(None, r"re:Donor:\s*(\w+)", PROSE) is None and Extractor.find(None, r"re:([", PROSE) is None
+assert passes(Counter(correct=3, wrong=1)) and not passes(Counter(correct=2, wrong=2))
+
+wrap = page_tree('<div class="content-sidebar-wrap"><main><article><h1>Grant</h1><p>Deadline: 1-Oct-2026</p></article></main>'
+                 '<aside class="sidebar">ads</aside></div>')
+assert "Deadline: 1-Oct-2026" in page_text(wrap) and "ads" not in page_text(wrap)  # a layout wrapper named "sidebar" stays
+
 ent = page_tree('<meta property="og:title" content="Ethiopia&#8217;s grants &amp; more">')[0]._kids[0]._kids[0]
 assert ent.value == ["Ethiopia’s grants & more"]  # entities in metadata are decoded
 print("ok")
