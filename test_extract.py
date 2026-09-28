@@ -70,4 +70,6 @@ A = page_tree('<main><dl><dt>Maximum award:</dt><dd>£100,000</dd></dl></main>')
 B = page_tree('<main><dl><dt>Total fund:</dt><dd>£2 million</dd></dl></main>')
 sels = {"award": ["dl > dd || Maximum award:", "dl > dd || Total fund:"]}
 assert ex.record(sels, A, "")["award"] == "£100,000" and ex.record(sels, B, "")["award"] == "£2 million"
+ent = page_tree('<meta property="og:title" content="Ethiopia&#8217;s grants &amp; more">')[0]._kids[0]._kids[0]
+assert ent.value == ["Ethiopia’s grants & more"]  # entities in metadata are decoded
 print("ok")

@@ -29,7 +29,12 @@ def norm(url):
 
 
 def host(url):
-    return urlsplit(url).netloc.lower().removeprefix("www.")
+    """The site a URL belongs to: its registrable domain. Sites spread content over subdomains (grants on
+    www2.fundsforngos.org, datasets on catalog.data.gov), and those are the same site.
+    ponytail: two-letter-country second levels (co.uk, gov.uk, com.au) cover most cases; tldextract if not."""
+    parts = urlsplit(url).netloc.lower().split(":")[0].split(".")
+    cc_2nd = len(parts) >= 3 and len(parts[-1]) == 2 and parts[-2] in ("co", "com", "org", "gov", "ac", "net", "edu")
+    return ".".join(parts[-3:] if cc_2nd else parts[-2:])
 
 
 class Browser:
@@ -220,10 +225,15 @@ class Brain:
         return [(a["hub"]["noul"], a["role"]["choice"], a["holds"]["choice"]) for a in self._run(states, self.page_q)]
 
 
-def crawl(start, target, max_pages, max_depth, mode, tabs, brain=None):
+PAGINATION = re.compile(r"/(page|p|pg)/\d+/?$", re.I)
+
+
+def crawl(start, target, max_pages, max_depth, mode, tabs, brain=None, avoid=()):
+    """avoid: path prefixes to steer away from (sections already judged not to be the target)."""
     brain, browser, pool = brain or Brain(target), Browser(tabs), ThreadPoolExecutor(tabs)
     start = norm(start)
     heap, seen, places, known, listed, done, n = [(-1.0, 0, start, 0)], {start}, [], set(), set(), set(), 0
+    start_links = {}  # the start page's links as the crawler saw them (via the browser if walled): its menu
     inlinks = Counter()
     scope = urlsplit(start).path.rstrip("/") + "/"
     walled = mode == "always"  # flips on once the site bot-walls plain requests
@@ -283,6 +293,8 @@ def crawl(start, target, max_pages, max_depth, mode, tabs, brain=None):
                 # laya judges *what* (semantics), structure judges *is it a list*.
                 # ponytail: hand-tuned blend; learn weights once there are labelled sites
                 score = hub * (0.2 + 0.8 * min(1.0, k / 10 + 0.2 * p["paged"]))
+                if depth == 0:
+                    start_links = dict(p["links"])
                 places.append({"url": final, "via": via, "depth": depth, "role": role, "holds": holds,
                                "hub": hub, "items": k, "score": round(score, 4), "prio": round(-neg, 4),
                                "title": p["title"], "sample": [t for t in p["items"].values() if len(t) > 15][:6]})
@@ -296,7 +308,8 @@ def crawl(start, target, max_pages, max_depth, mode, tabs, brain=None):
                     heapq.heapify(heap)
                 if depth < max_depth:
                     for u, t in p["links"].items():
-                        if u not in seen:
+                        # page 2..N of a list is stage 2's job; crawling them burns the budget on one section
+                        if u not in seen and not PAGINATION.search(urlsplit(u).path):
                             seen.add(u)
                             new.append((u, t, depth + 1))
             # one laya pass scores every link discovered this round
@@ -306,6 +319,8 @@ def crawl(start, target, max_pages, max_depth, mode, tabs, brain=None):
                     s *= 0.2
                 if not urlsplit(u).path.startswith(scope):  # e.g. start /en/ -> /fr/ mirror is out of scope
                     s *= 0.3
+                if any(urlsplit(u).path.startswith(a) for a in avoid):
+                    s *= 0.05
                 n += 1
                 heapq.heappush(heap, (-s, n, u, d))
     finally:
@@ -325,7 +340,7 @@ def crawl(start, target, max_pages, max_depth, mode, tabs, brain=None):
             sections.setdefault(r["holds"], r["url"])
     if ranked:  # the target's own slot belongs to the answer
         sections[ranked[0]["holds"]] = ranked[0]["url"]
-    return {"start": start, "target": target, "answer": ranked[0]["url"] if ranked else None,
+    return {"start": start, "target": target, "answer": ranked[0]["url"] if ranked else None, "start_links": start_links,
             "sections": sections, "top": ranked[:5], "places": places}
 
 

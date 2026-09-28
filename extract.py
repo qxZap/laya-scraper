@@ -14,6 +14,7 @@ them with laya's own top-down DOM walk ("does this block contain the <field>?" .
 A few LLM calls per site, none per item; the per-item work is CSS selection plus one batched laya pass.
 """
 import json, re, time
+from html import unescape
 from collections import Counter
 from urllib.parse import urljoin
 
@@ -126,7 +127,7 @@ def jsonld_values(soup):
             for v in x:
                 walk(v, path)
         elif x not in (None, ""):
-            out.setdefault(path, []).append(clean(str(x)))
+            out.setdefault(path, []).append(clean(unescape(str(x))))
 
     for s in soup.find_all("script", type="application/ld+json"):
         try:
@@ -151,7 +152,7 @@ def page_tree(html, url="", item_pattern=""):
     for m in soup.find_all("meta"):
         k = (m.get("name") or m.get("property") or m.get("itemprop") or "").strip()
         if k and m.get("content") and not re.search(r"^(viewport|theme-color|robots|google|msapplication|fb:|twitter:image|og:image|referrer|format-detection)|nonce|csrf|token|verification", k, re.I):
-            metas.setdefault(k, []).append(clean(m["content"]))
+            metas.setdefault(k, []).append(clean(unescape(m["content"])))
     meta_nodes = [Node(f"{k}: {'; '.join(v)[:300]}", sel=f"meta:{k}", value=v) for k, v in metas.items()]
     meta_nodes += [Node(f"{k}: {'; '.join(v)[:300]}", sel=f"ld:{k}", value=v)
                    for k, v in jsonld_values(soup).items() if len("".join(v)) < 2000]

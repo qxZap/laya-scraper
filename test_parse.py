@@ -15,4 +15,9 @@ assert parent("/2025/12/some-paper") == parent("/2026/01/other/") == "/*/*/"
 d = parse("https://ex.org/research/", NAV + "<main>" + "".join(f'<a href="/2025/{m:02}/paper-{m}">Research paper with a long title {m}</a>' for m in range(1, 9)) + "</main>")
 assert kids(d) == 8  # items outside the page's own path, split across dated folders, still one list
 assert norm("https://EX.org/en/publications?page=2#x") == "https://ex.org/en/publications"
+from scrape import host
+assert host("https://www2.fundsforngos.org/x") == host("https://www.fundsforngos.org/") == "fundsforngos.org"
+assert host("https://catalog.data.gov/dataset") == host("https://data.gov") == "data.gov"
+assert host("https://www.gov.uk/search") == "www.gov.uk" != host("https://www.bbc.co.uk/")  # separate sites under gov.uk / co.uk
+assert host("https://www.bbc.co.uk/news") == host("https://bbc.co.uk") == "bbc.co.uk"
 print("ok")

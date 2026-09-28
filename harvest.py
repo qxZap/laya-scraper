@@ -26,6 +26,8 @@ Clarify it into a scraping plan. Return JSON with exactly these keys:
 - "target": plural noun phrase for the items, the way a website would label the listing (e.g. "policy papers")
 - "singular": the same, singular
 - "description": one sentence saying what counts as such an item and what does not
+- "confusables": 3-6 kinds of pages or items that look similar or share words with the target but are NOT it
+  (e.g. for grants: sample grant proposals, grant-writing guides, news about awarded grants, funder profiles)
 - "listing_names": 5-8 labels websites commonly give the page that lists these items
 - "examples": 3 realistic example item titles
 - "fields": 5-9 fields to extract from each item's own page. Each: {{"name": snake_case,
@@ -35,10 +37,13 @@ Clarify it into a scraping plan. Return JSON with exactly these keys:
   on the item's page. Add "pattern" (a lenient Python regex any valid value must contain) only for fields with a
   well-known format, e.g. DOI, ISBN, patent or grant numbers, amounts of money; omit it for free text."""
 
-JUDGE_PROMPT = """We are looking for the page on {site} that lists the site's {target} ({description}).
+JUDGE_PROMPT = """We are looking for the page on {site} that lists the site's {target}.
+What counts: {description}
+What does NOT count, even if it shares words with the target: {confusables}; also templates, samples, guides,
+how-tos, news or articles *about* {target}.
 Rules, in order:
-1. Its listed items must themselves be {target} (look at the sample items), not categories, companies,
-   people or topics that merely lead to them.
+1. The sample items must themselves be individual {target} as defined above. Read them: a list of
+   "A sample proposal on ...", "How to write ...", categories, companies, people or topics is not a list of {target}.
 2. Prefer the main, complete listing (an index or archive with many items, ideally paginated) over a narrow
    sub-collection, a single item, or a mixed homepage.
 3. Some sites are directories with no complete listing, only lists by category, company or date. Then pick
@@ -50,8 +55,10 @@ Candidates found by the crawler:
 Links on the start page (label -> URL), in case the crawler missed the main listing:
 {menu}
 
-Return JSON: {{"pick": <candidate number>, "why": "<one short sentence>"}}, or if a start-page link is clearly
-the main listing and no candidate is, {{"url": "<that exact URL>", "why": "..."}}."""
+Return JSON, one of:
+{{"pick": <candidate number>, "why": "<one short sentence>"}}
+{{"url": "<exact start-page URL>", "why": "..."}}  if a start-page link is clearly the listing and no candidate is
+{{"pick": null, "why": "..."}}  if no candidate and no link is a listing of {target}"""
 
 
 def slug(s):
@@ -71,6 +78,12 @@ def make_plan(prompt, replan):
         json.dump(plan, f, indent=2, ensure_ascii=False)
     print(f"plan: LLM wrote {path} in {time.time() - t:.1f}s", file=sys.stderr)
     return plan
+
+
+def definition(plan):
+    """The target as laya is asked about it: the word alone is not enough ("grant proposals" are not grants)."""
+    not_ = "; ".join(plan.get("confusables", [])[:4])
+    return f"{plan['target']}: {plan['description']}" + (f" Not: {not_}." if not_ else "")
 
 
 def guessed_listings(site, plan, known):
@@ -94,31 +107,51 @@ def guessed_listings(site, plan, known):
     return found
 
 
-def locate(site, plan, brain, a):
-    target = f"{plan['target']} (also called {', '.join(plan['listing_names'][:4])})"
-    res = crawl(site, target, a.max_pages, 3, "auto", a.tabs, brain=brain)
-    # the start page may itself be the listing (a search landing page); the judge decides
-    top = sorted(res["places"], key=lambda r: -r["score"])[:6]
-    top += guessed_listings(site, plan, {p["url"] for p in res["places"]})
-    if len(top) < 2:
-        return top[0]["url"] if top else res["answer"]
+def judge(site, plan, top, menu):
+    """The LLM picks the listing -> URL, or None when nothing shown is a listing of the target."""
     cands = "\n".join(f"{i}. {p['url']}\n   title: {p['title']}\n   listed items: {p['items']}, score {p['score']}\n"
                       f"   sample items: {' | '.join(p['sample'][:5]) or '(none seen)'}" for i, p in enumerate(top, 1))
-    start = fetch_requests(site)
-    links = parse(start["final_url"], start["html"])["links"] if "html" in start else {}
-    menu = {u: t for u, t in links.items() if 1 < len(t) <= 40}  # menu-like: short labels
-    try:
-        pick = chat_json(JUDGE_PROMPT.format(site=site, target=plan["target"], description=plan["description"], cands=cands,
-                                             menu="\n".join(f"{t} -> {u}" for u, t in list(menu.items())[:80]) or "(none)"))
-        if pick.get("url") in menu:
-            print(f"locate: LLM chose start-page link {pick['url']} ({pick.get('why', '')})", file=sys.stderr)
-            return pick["url"]
-        chosen = top[int(pick["pick"]) - 1]["url"]
-        print(f"locate: LLM picked #{pick['pick']} {chosen} ({pick.get('why', '')})", file=sys.stderr)
-        return chosen
-    except Exception as e:  # the crawler's own ranking is a fine fallback
-        print(f"locate: judge failed ({e}); using crawler's pick", file=sys.stderr)
-        return res["answer"]
+    pick = chat_json(JUDGE_PROMPT.format(
+        site=site, target=plan["target"], description=plan["description"], cands=cands,
+        confusables=", ".join(plan.get("confusables", [])) or "(none listed)",
+        menu="\n".join(f"{t} -> {u}" for u, t in list(menu.items())[:80]) or "(none)"))
+    if pick.get("url") in menu:
+        print(f"locate: LLM chose start-page link {pick['url']} ({pick.get('why', '')})", file=sys.stderr)
+        return pick["url"]
+    if pick.get("pick") is None:
+        print(f"locate: LLM rejected every candidate ({pick.get('why', '')})", file=sys.stderr)
+        return None
+    chosen = top[int(pick["pick"]) - 1]["url"]
+    print(f"locate: LLM picked #{pick['pick']} {chosen} ({pick.get('why', '')})", file=sys.stderr)
+    return chosen
+
+
+def section(url):
+    """First path segment, the unit to steer away from: /proposal_category/..., /tag/..."""
+    seg = urlsplit(url).path.strip("/").split("/")[0]
+    return f"/{seg}/" if seg else ""
+
+
+def locate(site, plan, brain, a):
+    """Crawl, let the LLM judge; if it rejects everything, crawl once more away from the rejected sections."""
+    avoid = set()
+    for attempt in range(2):
+        res = crawl(site, definition(plan), a.max_pages, 3, "auto", a.tabs, brain=brain, avoid=tuple(avoid))
+        # the start page may itself be the listing (a search landing page); the judge decides
+        top = sorted((p for p in res["places"] if not any(urlsplit(p["url"]).path.startswith(s) for s in avoid)),
+                     key=lambda r: -r["score"])[:6]
+        top += guessed_listings(site, plan, {p["url"] for p in res["places"]})
+        menu = {u: t for u, t in res.get("start_links", {}).items() if 1 < len(t) <= 40}  # menu-like: short labels
+        try:
+            chosen = judge(site, plan, top, menu)
+        except Exception as e:  # the crawler's own ranking is a fine fallback
+            print(f"locate: judge failed ({e}); using crawler's pick", file=sys.stderr)
+            return res["answer"]
+        if chosen:
+            return chosen
+        avoid |= {section(p["url"]) for p in top if section(p["url"])}
+        print(f"locate: crawling again, away from {sorted(avoid)}", file=sys.stderr)
+    return None
 
 
 def main():
@@ -144,7 +177,7 @@ def main():
     log(f"plan: {plan['target']} — {plan['description']}")
     log(f"      e.g. {' | '.join(plan['examples'][:3])}")
     log(f"      fields: {', '.join(f['name'] + ':' + f['type'] for f in plan['fields'])}")
-    brain = Brain(plan["target"])
+    brain = Brain(definition(plan))
 
     cache = os.path.join("cache", slug(a.site) + "--" + slug(a.prompt) + ".json")
     if a.reuse_pages and os.path.exists(cache):  # re-extract only: same listing, same pages

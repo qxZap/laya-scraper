@@ -1,0 +1,97 @@
+{
+  "target": "grants",
+  "singular": "grant",
+  "description": "A grant is a funding award offered by a government agency, foundation, or other funder that eligible applicants can apply for to support a specific project, program, or research; it excludes sample proposals, how-to guides, news articles about awarded grants, and funder profile pages.",
+  "confusables": [
+    "sample grant proposals or templates",
+    "grant-writing guides and tutorials",
+    "news articles about previously awarded grants",
+    "funder or foundation profile pages",
+    "grant outcome reports or white papers",
+    "loans, contracts, or other non-grant funding instruments"
+  ],
+  "listing_names": [
+    "Grants",
+    "Funding Opportunities",
+    "Open Grants",
+    "Grant Programs",
+    "Available Grants",
+    "Active Funding Opportunities",
+    "Grant Database",
+    "Search Grants"
+  ],
+  "examples": [
+    "Rural Community Development Block Grant — 2024 Cycle",
+    "NSF Graduate Research Fellowship Program (GRFP)",
+    "Climate Action Innovation Fund — Small Grants for Nonprofits"
+  ],
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "description": "The official name of the grant program as displayed at the top of the grant's detail page.",
+      "example": "Rural Community Development Block Grant — 2024 Cycle"
+    },
+    {
+      "name": "funder",
+      "type": "text",
+      "description": "The organization, agency, or foundation offering the grant, usually shown as a logo with name near the top.",
+      "example": "U.S. Department of Agriculture"
+    },
+    {
+      "name": "summary",
+      "type": "text",
+      "description": "A short paragraph describing the grant's purpose and what it funds.",
+      "example": "Provides funding to support community infrastructure, housing, and economic development projects in rural areas."
+    },
+    {
+      "name": "amount",
+      "type": "money",
+      "description": "The award ceiling or range, usually displayed with a dollar sign and sometimes 'up to' or 'between'; commonly formatted like $50,000 or $25,000–$250,000.",
+      "example": "$250,000",
+      "pattern": "\\$?[\\d,]+(\\.[\\d]{2})?(\\s?(to|–|-)\\s?\\$?[\\d,]+(\\.[\\d]{2})?)?"
+    },
+    {
+      "name": "application_deadline",
+      "type": "date",
+      "description": "The date by which applications must be submitted, usually labeled 'Deadline' or 'Application Due Date'.",
+      "example": "March 15, 2025"
+    },
+    {
+      "name": "posted_date",
+      "type": "date",
+      "description": "The date the grant opportunity was posted or opened, typically labeled 'Posted' or 'Open Date'.",
+      "example": "January 10, 2025"
+    },
+    {
+      "name": "eligibility",
+      "type": "text",
+      "description": "Description of who can apply (e.g., nonprofits, states, individuals), usually in a dedicated 'Eligibility' section.",
+      "example": "State, local, and tribal governments; nonprofit organizations with 501(c)(3) status"
+    },
+    {
+      "name": "grant_id",
+      "type": "text",
+      "description": "An identifier assigned by the funder (e.g., an Opportunity Number on Grants.gov or a foundation reference code); often near the title.",
+      "example": "USDA-RCDG-2024-00173",
+      "pattern": "[A-Z0-9]{2,5}-[A-Z0-9]{2,5}-[A-Z0-9]{2,5}-\\d{4,6}"
+    },
+    {
+      "name": "application_url",
+      "type": "url",
+      "description": "Direct link to the application portal, instructions, or downloadable application package (PDF/Word).",
+      "example": "https://www.grants.gov/web/grants/view-opportunity.html?oppId=345678"
+    },
+    {
+      "name": "categories",
+      "type": "list",
+      "description": "Topic tags or categories assigned to the grant (e.g., 'Education', 'Environment'), usually shown as chips or a comma-separated list.",
+      "example": [
+        "Community Development",
+        "Rural",
+        "Infrastructure"
+      ]
+    }
+  ],
+  "prompt": "grants"
+}

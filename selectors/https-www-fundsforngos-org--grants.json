@@ -1,0 +1,42 @@
+{
+  "selectors": {
+    "title": [
+      "ld:headline"
+    ],
+    "summary": [
+      "meta:og:description"
+    ],
+    "posted_date": [
+      "meta:article:published_time"
+    ],
+    "categories": [
+      "ld:articleSection"
+    ]
+  },
+  "fields": {
+    "title": "validated (4/4 correct)",
+    "funder": "unreliable ({'wrong': 4})",
+    "summary": "validated (4/4 correct)",
+    "amount": "unreliable ({'absent': 2, 'missed': 2})",
+    "application_deadline": "unreliable ({'wrong': 4})",
+    "posted_date": "validated (4/4 correct)",
+    "eligibility": "unreliable ({'absent': 2, 'missed': 2})",
+    "grant_id": "absent (not shown on sample pages)",
+    "application_url": "absent (not shown on sample pages)",
+    "categories": "validated (4/4 correct)"
+  },
+  "coverage_checked": {},
+  "fields_in_plan": [
+    "title",
+    "funder",
+    "summary",
+    "amount",
+    "application_deadline",
+    "posted_date",
+    "eligibility",
+    "grant_id",
+    "application_url",
+    "categories"
+  ],
+  "validated_on": "2026-09-28"
+}
