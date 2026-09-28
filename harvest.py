@@ -205,14 +205,14 @@ def main():
     # validated selectors are saved per site + prompt: repeat runs need no LLM and give the same answers
     sel_path = os.path.join("selectors", slug(a.site) + "--" + slug(a.prompt) + ".json")
     names = [f["name"] for f in plan["fields"]]
-    known = None
-    if os.path.exists(sel_path) and not a.revalidate:
-        known = json.load(open(sel_path, encoding="utf-8"))
-        if known.get("fields_in_plan") != names:  # the plan changed since: learn again
-            known = None
+    known = seed = None
+    if os.path.exists(sel_path):
+        saved = json.load(open(sel_path, encoding="utf-8"))
+        if saved.get("fields_in_plan") == names:  # the plan changed since: learn again from scratch
+            known, seed = (None, saved["selectors"]) if a.revalidate else (saved, None)
     try:
         got, report = Extractor(brain, plan).run({u: p["html"] for u, p in pages.items()}, info.get("item_pattern", ""),
-                                                 guess=a.guess, known=known, log=log)
+                                                 guess=a.guess, known=known, seed=seed, log=log)
     except LLMUnavailable as e:
         raise SystemExit(f"LLM unavailable ({e}). Pages are cached: rerun later with --reuse-pages, "
                          f"point LLM_BASE_URL at another model, or use --guess for laya-only (unvalidated) values.")

@@ -1,31 +1,42 @@
 {
   "selectors": {
-    "title": [
-      "article.post.type-post > header.entry-header > h1.entry-title"
+    "posted_date": [
+      "meta:article:published_time"
     ],
     "amount": [
-      "article.post.type-post > div.entry-content > ul > li",
-      "article.post.type-post > div.entry-content > ul > li > strong || Grant size:"
+      "re:(?i)Grant amount:\\s*([^\\n]+)",
+      "article.post.type-post > div.entry-content > ul > li > strong || Czech financial contribution per project:"
     ],
-    "application_deadline": [
-      "re:(?:Application close date|Deadline):\\s*(\\d{1,2} \\w+ \\d{4})",
-      "article.post.type-post > div.entry-content > ul > li > strong || Deadline to apply:"
+    "summary": [
+      "article.post.type-post > div.entry-content > p"
     ],
     "application_url": [
       "article.post.type-post > div.entry-content > ol > li > a || Read the official guidelines."
     ],
+    "application_deadline": [
+      "re:(?:Application close date|Deadline):\\s*(\\d{1,2} \\w+ \\d{4})",
+      "article.post.type-post > div.entry-content > ul > li > strong || Deadline to apply:",
+      "article.post.type-post > div.entry-content > ul > li > strong || Closing date:"
+    ],
     "categories": [
       "ld:articleSection"
+    ],
+    "title": [
+      "ld:headline",
+      "article.post.type-post > header.entry-header > h1.entry-title"
+    ],
+    "eligibility": [
+      "re:(?is)Who\\s+(?:it\\s+serves|Is\\s+Eligible)[:?]?\\s*(.+?)(?=\\n\\s*(?:Eligible|Why|How|About|Application|Selection))"
     ]
   },
   "fields": {
     "title": "validated (4/4 correct)",
     "funder": "unreliable ({'wrong': 2, 'correct': 2})",
-    "summary": "unreliable ({'correct': 2, 'wrong': 2})",
-    "amount": "validated (1/4 correct)",
-    "application_deadline": "validated as text pattern (3/4 correct)",
-    "posted_date": "unreliable ({'correct': 1, 'absent': 1, 'missed': 2})",
-    "eligibility": "unreliable ({'wrong': 4})",
+    "summary": "validated (3/4 correct)",
+    "amount": "validated as text pattern (1/4 correct)",
+    "application_deadline": "validated (3/4 correct)",
+    "posted_date": "validated (4/4 correct)",
+    "eligibility": "validated as text pattern (3/4 correct)",
     "grant_id": "absent (not shown on sample pages)",
     "application_url": "validated (1/4 correct)",
     "categories": "validated (4/4 correct)"

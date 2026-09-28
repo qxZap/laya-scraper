@@ -82,6 +82,22 @@ amt = Extractor.find(None, r"re:up to ((?:AUD|USD|EUR|£|\$)\s?[\d,]+)", PROSE)
 assert amt.value == ["AUD 50,000"] and fits(amt, T(type="money"), "", strict=False)
 assert Extractor.find(None, r"re:Donor:\s*(\w+)", PROSE) is None and Extractor.find(None, r"re:([", PROSE) is None
 assert passes(Counter(correct=3, wrong=1)) and not passes(Counter(correct=2, wrong=2))
+assert passes(Counter(correct=1, absent=3)) and not passes(Counter(correct=2, missed=2))
+assert passes(Counter(correct=2, uncertain=2))  # disputed pages do not count against a field
+
+# second opinion: a verdict stands only where two gradings agree
+class Fake(Extractor):
+    def __init__(self, again):
+        self.again = again
+    def grade(self, sels, trees, pages):
+        return None, None, {u: self.again[u] for u in pages}
+per = {"a": {"f": "correct"}, "b": {"f": "correct"}, "c": {"f": "wrong"}, "d": {"f": "correct"}}
+tally, ex = {"f": Counter(correct=3, wrong=1)}, {"f": [("c", "wrong", "x")]}
+Fake({"c": {"f": "correct"}}).second_opinion({}, {}, list(per), tally, ex, per, lambda *m: None)
+assert tally["f"] == Counter(correct=3, uncertain=1) and ex["f"] == []  # noisy "wrong" set aside
+tally, ex = {"f": Counter(correct=3, wrong=1)}, {"f": [("c", "wrong", "x")]}
+Fake({"c": {"f": "wrong"}}).second_opinion({}, {}, list(per), tally, ex, per, lambda *m: None)
+assert tally["f"] == Counter(correct=3, wrong=1) and ex["f"] == [("c", "wrong", "x")]  # confirmed stays
 
 wrap = page_tree('<div class="content-sidebar-wrap"><main><article><h1>Grant</h1><p>Deadline: 1-Oct-2026</p></article></main>'
                  '<aside class="sidebar">ads</aside></div>')

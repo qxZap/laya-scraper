@@ -425,8 +425,13 @@ def page_text(tree, limit=20000):
 
 
 def passes(c):
-    """A field's grading on the sample pages is good enough to trust its selector everywhere."""
-    return c["correct"] and not c["wrong"] and c["missed"] <= 1 or c["correct"] >= 3 and c["wrong"] <= 1 and c["missed"] <= 1
+    """A field's grading is good enough to trust its selector everywhere. Works for any number of graded pages
+    ("uncertain" ones, where two gradings disagreed, do not count); on 4 pages: no wrong value and at most one
+    miss, or at least 3 correct with at most one wrong and one miss."""
+    n = c["correct"] + c["wrong"] + c["missed"] + c["absent"]
+    if not c["correct"] or c["missed"] > n / 4:
+        return False
+    return not c["wrong"] or c["correct"] >= 0.75 * n and c["wrong"] <= n / 4
 
 
 class Extractor:
@@ -608,15 +613,41 @@ class Extractor:
             raise LLMUnavailable("every grading call failed")
         tally = {f["name"]: Counter() for f in fields}
         examples = {f["name"]: [] for f in fields}
+        per = {}
         for u, (verdict, rec) in zip(sample, results):
+            per[u] = {}
             for f in fields:
                 v = str(verdict.get(f["name"], "?")).lower()
+                per[u][f["name"]] = v
                 tally[f["name"]][v] += 1
                 if v in ("wrong", "missed"):
                     examples[f["name"]].append((u, v, rec[f["name"]]))
-        return tally, examples
+        return tally, examples, per
 
-    def run(self, pages, item_pattern="", samples=4, rounds=2, guess=False, known=None, log=print):
+    def second_opinion(self, sels, trees, sample, tally, examples, per, log):
+        """Grading is an LLM call and not perfectly repeatable. Where a field's verdicts are mixed (right on
+        some pages, wrong or missed on others), the pages behind the negative verdicts are graded again; a
+        verdict stands only where both gradings agree, disagreements count as "uncertain"."""
+        mixed = [n for n, c in tally.items() if c["correct"] and (c["wrong"] or c["missed"])]
+        pages = [u for u in sample if any(per[u].get(n) in ("wrong", "missed") for n in mixed)]
+        if not pages:
+            return
+        _, _, again = self.grade(sels, trees, pages)
+        flipped = []
+        for n in mixed:
+            c = Counter()
+            for u in sample:
+                v1 = per[u].get(n, "?")
+                v2 = again.get(u, {}).get(n, v1) if u in again else v1
+                c[v1 if v1 == v2 else "uncertain"] += 1
+            if c != tally[n]:
+                flipped.append(n)
+            tally[n] = c
+            examples[n] = [(u, v, val) for u, v, val in examples[n] if again.get(u, {}).get(n, v) == v]
+        if flipped:
+            log(f"    second opinion changed: {', '.join(flipped)}")
+
+    def run(self, pages, item_pattern="", samples=4, rounds=2, guess=False, known=None, seed=None, log=print):
         """pages: {url: html} -> ({url: record}, report).
 
         1. the LLM maps fields to elements on two pages -> selectors
@@ -625,7 +656,9 @@ class Extractor:
         4. only fields whose selectors pass produce values; each value also gets laya's confidence
         A field that never passes stays empty ("unreliable"): a blank is honest, a wrong value is not.
         `guess` fills those with laya's own DOM walk instead, marked as guesses.
-        `known`: a previous run's report ({"selectors", "fields"}) for this site; skips steps 1-3, no LLM."""
+        `known`: a previous run's report ({"selectors", "fields"}) for this site; skips steps 1-3, no LLM.
+        `seed`: selectors from a previous run to re-check (revalidation): they are graded first, only fields
+        without one are mapped, and only failing fields are repaired."""
         fields = self.plan["fields"]
         trees = {u: page_tree(h, u, item_pattern) for u, h in pages.items()}
         urls = list(trees)
@@ -634,16 +667,22 @@ class Extractor:
             sels, status = {k: list(v) for k, v in known["selectors"].items()}, dict(known["fields"])
             log(f"  reusing {len(sels)} validated selectors (no LLM calls); --revalidate to check them again")
         else:
-            sels = {k: [v] for k, v in (self.llm_selectors(trees, urls[:2], fields, log) if len(urls) >= 2 else {}).items()}
+            sels = {k: list(v) for k, v in (seed or {}).items()}
+            missing = [f for f in fields if f["name"] not in sels]
+            if seed:
+                log(f"  re-checking {len(sels)} saved selectors; mapping {len(missing)} fields without one")
+            if missing and len(urls) >= 2:
+                sels.update({k: [v] for k, v in self.llm_selectors(trees, urls[:2], missing, log).items()})
             status = {}
         for rnd in range(0 if known else rounds + 1):
-            tally, examples = self.grade(sels, trees, sample)
+            tally, examples, per = self.grade(sels, trees, sample)
+            self.second_opinion(sels, trees, sample, tally, examples, per, log)
             failing = []
             for f in fields:
                 c, name = tally[f["name"]], f["name"]
                 if passes(c):
                     status[name] = f"validated ({c['correct']}/{len(sample)} correct)"
-                elif c["absent"] + c["correct"] == len(sample) and not c["correct"]:
+                elif c["absent"] and not (c["correct"] or c["wrong"] or c["missed"]):
                     status[name] = "absent (not shown on sample pages)"
                     sels.pop(name, None)
                 else:
@@ -729,7 +768,7 @@ class Extractor:
             trial = self.llm_patterns(trees, pages, prose, log, feedback)
             if not trial:
                 return
-            tally, examples = self.grade({**sels, **{k: [v] for k, v in trial.items()}}, trees, sample)
+            tally, examples, _ = self.grade({**sels, **{k: [v] for k, v in trial.items()}}, trees, sample)
             still, notes = [], []
             for f in prose:
                 name = f["name"]
