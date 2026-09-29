@@ -1,0 +1,164 @@
+/* Ads for our own apps, built by js/showcase.js into the page's .showcase-slot element.
+   Small screens: one ad at a time in a bar fixed to the bottom edge, with a thin timer line.
+   This page is one column with no rail beside it, so the bar stays a bar at every width: one ad at a time,
+   each taking its turn. The stacked rail layout lives in the apps' own copies of this file.
+   Each ad paints itself from its brand theme (--sc-* set from makers.js), so it reads the same on any page theme. */
+
+.showcase {
+  position: fixed;
+  z-index: 40;
+  inset: auto .75rem calc(.75rem + env(safe-area-inset-bottom)) .75rem;
+  max-width: 34rem;
+  margin-inline: auto;
+}
+body.has-showcase-bar { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom)); }
+
+.showcase-stage {
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(10, 14, 24, .3), 0 2px 8px rgba(10, 14, 24, .2);
+  isolation: isolate;
+}
+.showcase-track { display: grid; }
+.sc-slide {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "brand head cta";
+  align-items: center;
+  gap: .75rem;
+  padding: .8rem .9rem 1.05rem;
+  color: var(--sc-fg);
+  background: var(--sc-bg);
+  text-decoration: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(.4rem);
+  transition: opacity .22s ease-in, transform .22s ease-in, visibility 0s linear .22s;
+}
+.sc-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity .42s cubic-bezier(.2, .8, .2, 1), transform .42s cubic-bezier(.2, .8, .2, 1);
+}
+.sc-slide:focus-visible { outline: 3px solid var(--sc-accent); outline-offset: -3px; }
+.sc-art, .sc-name { display: none; }
+.sc-brand { grid-area: brand; display: flex; align-items: center; gap: .6rem; min-width: 0; }
+.sc-logo { display: block; flex: none; width: 2.5rem; height: 2.5rem; border-radius: 10px; }
+.sc-headline {
+  grid-area: head;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  font-size: .9375rem; font-weight: 700; line-height: 1.3;
+}
+.sc-cta {
+  grid-area: cta;
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  min-height: 2.25rem; padding: .45rem .85rem; border-radius: 999px;
+  font-size: .8125rem; font-weight: 700; white-space: nowrap;
+  color: var(--sc-cta-ink); background: var(--sc-cta-bg);
+}
+.sc-arrow { transition: transform .2s ease-out; }
+.sc-slide:hover .sc-arrow, .sc-slide:focus-visible .sc-arrow { transform: translateX(.2rem); }
+@media (max-width: 26rem) {
+  .sc-cta { width: 2.25rem; padding: 0; }
+  .sc-cta-text { display: none; }
+}
+
+/* Timing. The timer line's animation is the clock: when it ends, showcase.js brings in the next ad, so pausing the
+   animation (pointer or focus inside, tab hidden) pauses the rotation. In the rail the line is invisible but still runs. */
+.showcase-timer { position: absolute; z-index: 1; left: 1rem; right: 1rem; bottom: .4rem; height: 3px; overflow: hidden; border-radius: 2px; background: rgba(255, 255, 255, .3); pointer-events: none; }
+.showcase-timer:not(.is-running) { visibility: hidden; }
+.showcase-timer i { position: absolute; inset: 0; border-radius: inherit; background: rgba(255, 255, 255, .92); transform: scaleX(0); transform-origin: left; }
+.showcase-timer.is-running i { animation: sc-progress var(--sc-interval, 6s) linear forwards; }
+.showcase.is-paused .showcase-timer i, .showcase.is-hidden-tab .showcase-timer i { animation-play-state: paused; }
+@keyframes sc-progress { to { transform: scaleX(1); } }
+
+/* Scenes, only shown in the rail. Each is drawn at a comfortable size, then scaled down to fill the card's art box. */
+.sc-motif { position: absolute; top: 0; left: 0; width: calc(100% / .7); height: calc(100% / .7); overflow: hidden; background: var(--sc-panel); transform: scale(.7); transform-origin: 0 0; }
+
+.sc-motif-data { display: grid; align-content: center; gap: .7rem; padding: 0 1.1rem; font: 500 .8125rem/1 "JetBrains Mono", ui-monospace, Consolas, monospace; }
+.sc-row { display: flex; align-items: center; gap: .6rem; }
+.sc-key { flex: 0 0 5.4rem; color: var(--sc-accent); }
+.sc-val { flex: 1; height: .55rem; border-radius: 4px; background: linear-gradient(90deg, var(--sc-accent), var(--sc-accent-2)); transform: scaleX(.06); transform-origin: left; opacity: .4; }
+.sc-slide.is-active .sc-val { animation: sc-fill .7s cubic-bezier(.2, .8, .2, 1) calc(.5s + var(--i) * .2s) forwards; }
+@keyframes sc-fill { to { transform: scaleX(var(--w)); opacity: 1; } }
+.sc-beam { position: absolute; left: 0; right: 0; top: -3rem; height: 3rem; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--sc-accent) 30%, transparent), transparent); }
+.sc-slide.is-active .sc-beam { animation: sc-beam 1.4s ease-in-out .15s 2; }
+@keyframes sc-beam { to { transform: translateY(16rem); } }
+
+/* Penholder: a phone showing the team's list in Penholder's own colours. The phone runs past the bottom of the panel.
+   Slots come from showcase.js (--y start, --dy move): the pen holder drags the last card above the line, the rest shift down. */
+.sc-motif-order { display: grid; justify-items: center; padding-top: .7rem; }
+.sc-phone { width: 11.75rem; height: 12rem; padding: .35rem .35rem 0; border-radius: 1.7rem 1.7rem 0 0; background: #0e1017; box-shadow: 0 10px 24px rgba(15, 12, 50, .35); }
+.sc-screen { position: relative; height: 100%; padding: .8rem .6rem 0; border-radius: 1.4rem 1.4rem 0 0; background: #fbfbfd; color: #0e1017; font-size: .625rem; line-height: 1; }
+.sc-screen::before { content: ""; position: absolute; top: .3rem; left: 50%; width: 2.4rem; height: .3rem; margin-left: -1.2rem; border-radius: .2rem; background: #0e1017; }
+.sc-app-bar { display: flex; align-items: center; justify-content: space-between; height: 1.2rem; margin-bottom: .45rem; font-size: .6875rem; font-weight: 750; }
+.sc-pen { position: relative; width: 1rem; height: 1rem; border-radius: .3rem; background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+.sc-pen::after { content: ""; position: absolute; left: .45rem; top: .2rem; width: .12rem; height: .6rem; border-radius: .1rem; background: #fff; transform: rotate(35deg); }
+.sc-list { position: relative; height: 7.3rem; }
+.sc-rank { position: absolute; left: 0; top: var(--y); display: grid; place-items: center; width: .8rem; height: 1.35rem; font-weight: 700; color: #5f677a; font-variant-numeric: tabular-nums; }
+.sc-divider { position: absolute; left: 0; right: 0; top: var(--y); display: flex; align-items: center; gap: .3rem; height: .6rem; font-size: .5rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #4f46e5; white-space: nowrap; }
+.sc-divider::after { content: ""; flex: 1; height: 1.5px; border-radius: 1px; background: #4f46e5; }
+.sc-card { position: absolute; left: 1.05rem; right: 0; top: var(--y); display: flex; align-items: center; height: 1.35rem; padding: 0 .45rem; font-weight: 600; white-space: nowrap; background: #fff; border: 1px solid #e5e7ef; border-radius: .4rem; }
+.sc-card.is-rising { z-index: 1; }
+.sc-finger { position: absolute; right: .35rem; top: 50%; width: 1rem; height: 1rem; margin-top: -.5rem; border-radius: 50%; background: rgba(79, 70, 229, .22); box-shadow: 0 0 0 2px rgba(79, 70, 229, .55); opacity: 0; }
+.sc-slide.is-active .sc-card { animation: sc-shift .6s cubic-bezier(.3, .7, .2, 1) 1.15s forwards; }
+.sc-slide.is-active .sc-card.is-rising { animation: sc-drag 1.4s cubic-bezier(.45, 0, .2, 1) .75s forwards; }
+.sc-slide.is-active .sc-finger { animation: sc-finger 1.9s ease-out .45s forwards; }
+@keyframes sc-shift { to { transform: translateY(var(--dy)); } }
+@keyframes sc-drag {
+  18% { transform: scale(1.06); border-color: #4f46e5; box-shadow: 0 6px 14px rgba(15, 12, 50, .22); }
+  82% { transform: translateY(var(--dy)) scale(1.06); border-color: #4f46e5; box-shadow: 0 6px 14px rgba(15, 12, 50, .22); }
+  100% { transform: translateY(var(--dy)); color: #3730a3; background: #eef0ff; border-color: #4f46e5; box-shadow: none; }
+}
+@keyframes sc-finger { 0% { opacity: 0; transform: scale(.6); } 15%, 80% { opacity: 1; transform: none; } 100% { opacity: 0; transform: scale(1.25); } }
+
+/* Censory: a document with made-up personal data. A gold box marks each value as found, then a bar blacks it out. */
+.sc-motif-redact { display: grid; align-content: start; gap: .3rem; padding: .9rem .9rem 0; font-size: .75rem; line-height: 1.5; color: #1f2430; }
+.sc-doc-title { display: flex; justify-content: space-between; margin-bottom: .15rem; padding-bottom: .3rem; border-bottom: 1px solid #d8cfbb; font-size: .6875rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: #111a26; }
+.sc-doc-title span { font-weight: 600; letter-spacing: 0; text-transform: none; color: #6b6457; }
+.sc-doc-row { display: flex; gap: .5rem; white-space: nowrap; }
+.sc-doc-label { flex: 0 0 3.4rem; color: #6b6457; }
+.sc-pii { position: relative; font-weight: 600; }
+.sc-pii::before, .sc-pii::after { content: ""; position: absolute; inset: -.08rem -.2rem; border-radius: 3px; }
+.sc-pii::before { background: rgba(201, 162, 74, .18); box-shadow: 0 0 0 1.5px #c9a24a; opacity: 0; }
+.sc-pii::after { background: #111a26; transform: scaleX(0); transform-origin: left; }
+.sc-slide.is-active .sc-pii::before { animation: sc-detect .55s ease-out calc(.5s + var(--i) * .42s) forwards; }
+.sc-slide.is-active .sc-pii::after { animation: sc-close .35s cubic-bezier(.2, .8, .2, 1) calc(.8s + var(--i) * .42s) forwards; }
+@keyframes sc-detect { 35% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes sc-close { to { transform: scaleX(1); } }
+
+/* Vetrosoft: a small business site builds itself piece by piece in a browser window, then the price tag lands.
+   The window runs past the bottom of the panel, like the phone. */
+.sc-motif-site { display: grid; align-content: start; padding: 1rem 1.1rem 0; }
+.sc-browser { overflow: hidden; border-radius: .7rem .7rem 0 0; background: #faf6f1; color: #1c1917; box-shadow: 0 12px 28px rgba(0, 0, 0, .4); }
+.sc-browser-bar { display: flex; align-items: center; gap: .3rem; height: 1.6rem; padding: 0 .6rem; background: #ece4d8; }
+.sc-browser-bar i { width: .5rem; height: .5rem; border-radius: 50%; background: #cfc4b4; }
+.sc-url { flex: 1; margin-left: .4rem; padding: .15rem .6rem; border-radius: 999px; background: #fff; color: #57534e; font-size: .6875rem; line-height: 1.2; }
+.sc-site { display: grid; gap: .6rem; padding: .7rem .9rem 2rem; }
+.sc-site-nav { display: flex; align-items: center; gap: .5rem; font-size: .8125rem; }
+.sc-site-nav b { margin-right: auto; font-weight: 800; }
+.sc-site-nav i { width: 1.6rem; height: .3rem; border-radius: 2px; background: #d6cdbf; }
+.sc-site-hero { max-width: 13rem; font-size: 1.3rem; font-weight: 800; line-height: 1.1; letter-spacing: -.02em; }
+.sc-site-btn { justify-self: start; padding: .35rem .8rem; border-radius: 999px; background: linear-gradient(135deg, #63f0ff, #2b8cff 50%, #7d6cff); color: #0c0a09; font-size: .75rem; font-weight: 800; }
+.sc-site-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem; }
+.sc-site-tiles i { height: 2.6rem; border-radius: .45rem; background: linear-gradient(135deg, #eadfce, #d5c4ab); }
+.sc-price { position: absolute; right: 1.1rem; bottom: 1rem; padding: .4rem .8rem; border-radius: 999px; background: #0c0a09; color: #faf6f1; font-size: 1.05rem; font-weight: 800; white-space: nowrap; box-shadow: 0 0 0 2px #2b8cff, 0 8px 20px rgba(0, 0, 0, .45); transform: rotate(-4deg); }
+.sc-slide.is-active .sc-build { animation: sc-build .5s cubic-bezier(.2, .8, .2, 1) calc(.4s + var(--i) * .32s) both; }
+.sc-slide.is-active .sc-price { animation: sc-tag .55s cubic-bezier(.3, 1.4, .5, 1) 1.9s both; }
+@keyframes sc-build { from { opacity: 0; transform: translateY(.6rem); } }
+@keyframes sc-tag { from { opacity: 0; transform: rotate(-4deg) scale(.4); } }
+
+@media (prefers-reduced-motion: reduce) {
+  /* No sliding, no scenes and no rotation. The timer line's animation is the clock,
+     so stopping it here is what stops the ads taking turns: the cards showing are the
+     ones that stay. */
+  .sc-slide, .sc-slide.is-active, .sc-arrow, .showcase-track.is-sliding { transition: none; }
+  .showcase *, .showcase *::before, .showcase *::after { animation: none !important; }
+  .showcase-timer { visibility: hidden; }
+  .sc-val { transform: scaleX(var(--w)); opacity: 1; }
+  .sc-card { transform: translateY(var(--dy)); }
+  .sc-card.is-rising { color: #3730a3; background: #eef0ff; border-color: #4f46e5; }
+  .sc-pii::after { transform: scaleX(1); }
+}

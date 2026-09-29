@@ -29,6 +29,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="showcase.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -294,6 +295,8 @@ python scrape.py https://odi.org/en/                                # just find 
   </section>
 </main>
 
+<aside id="showcase" class="showcase-slot" aria-label="Other apps"></aside>
+
 <footer class="foot">
   <div class="wrap narrow">
     <p class="credits">Built on <a href="https://github.com/NandhaKishorM/laya">laya</a> by NandhaKishorM (Apache 2.0), <a href="https://github.com/zfcsoftware/puppeteer-real-browser">puppeteer-real-browser</a> (ISC), <a href="https://github.com/psf/requests">requests</a>, <a href="https://www.crummy.com/software/BeautifulSoup/">Beautiful Soup</a> and <a href="https://pytorch.org">PyTorch</a>. The explainer was made with <a href="https://github.com/heygen-com/hyperframes">HyperFrames</a>, narrated by <a href="https://github.com/hexgrad/kokoro">Kokoro</a>. laya-scraper itself is MIT licensed.</p>
@@ -304,6 +307,6 @@ python scrape.py https://odi.org/en/                                # just find 
   </div>
 </footer>
 
-<script src="app.js" defer></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
