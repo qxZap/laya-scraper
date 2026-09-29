@@ -1,4 +1,9 @@
 {
+  "site": "https://odi.org/en/",
+  "prompt": "publications",
+  "listing": "https://odi.org/en/publications/",
+  "item_pattern": "/en/publications/",
+  "paging": "next-link",
   "selectors": {
     "title": [
       "header.header > div.contained-width > div.header__content > h1.header__title"
@@ -42,5 +47,13 @@
     "keywords",
     "citation_count"
   ],
-  "validated_on": "2026-09-25"
+  "validated_on": "2026-09-25",
+  "build_cost": {
+    "total": {
+      "calls": 0,
+      "in": 0,
+      "out": 0,
+      "usd": 0
+    }
+  }
 }

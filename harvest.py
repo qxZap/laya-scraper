@@ -167,17 +167,29 @@ def main():
     ap.add_argument("--replan", action="store_true", help="ask the LLM for a fresh plan instead of reusing one")
     ap.add_argument("--reuse-pages", action="store_true", help="skip locate/paging/fetching; re-extract cached pages")
     ap.add_argument("--guess", action="store_true", help="fill fields that failed validation with laya's DOM walk")
-    ap.add_argument("--revalidate", action="store_true", help="ignore saved selectors for this site; map and validate again")
+    ap.add_argument("--revalidate", action="store_true", help="re-check the recipe's selectors with the LLM")
+    ap.add_argument("--relocate", action="store_true", help="find the listing again instead of using the recipe's")
     ap.add_argument("--out", help=".csv or .json")
     a = ap.parse_args()
     t0 = time.time()
     log = lambda *m: print(*m, file=sys.stderr)
 
+    llm.set_stage("plan")
     plan = make_plan(a.prompt, a.replan)
     log(f"plan: {plan['target']} — {plan['description']}")
     log(f"      e.g. {' | '.join(plan['examples'][:3])}")
     log(f"      fields: {', '.join(f['name'] + ':' + f['type'] for f in plan['fields'])}")
     brain = Brain(definition(plan))
+
+    # the recipe: what the AI worked out for this site + prompt (listing, selectors, text patterns). With it,
+    # a run is plain code: no LLM call, same answers every time.
+    recipe_path = os.path.join("selectors", slug(a.site) + "--" + slug(a.prompt) + ".json")
+    names = [f["name"] for f in plan["fields"]]
+    recipe = json.load(open(recipe_path, encoding="utf-8")) if os.path.exists(recipe_path) else None
+    if recipe and recipe.get("fields_in_plan") != names:  # the plan changed since: learn again from scratch
+        log(f"recipe {recipe_path} was made for another schema; building a new one")
+        recipe = None
+    known, seed = (None, recipe["selectors"]) if recipe and a.revalidate else (recipe, None)
 
     cache = os.path.join("cache", slug(a.site) + "--" + slug(a.prompt) + ".json")
     if a.reuse_pages and os.path.exists(cache):  # re-extract only: same listing, same pages
@@ -185,7 +197,14 @@ def main():
         hub, listed, info, pages = c["hub"], c["listed"], c["info"], c["pages"]
         log(f"reusing {len(pages)} cached pages from {cache}")
     else:
-        hub = a.hub or locate(a.site, plan, brain, a)
+        llm.set_stage("locate")
+        if a.hub:
+            hub = a.hub
+        elif recipe and recipe.get("listing") and not a.relocate:
+            hub = recipe["listing"]
+            log(f"listing: {hub}  (from the recipe, no LLM)")
+        else:
+            hub = locate(a.site, plan, brain, a)
         if not hub:
             raise SystemExit(f"no listing found on {a.site} (blocked, or nothing matching '{plan['target']}'); try --hub URL")
         log(f"listing: {hub}  [{time.time() - t0:.0f}s]")
@@ -202,38 +221,37 @@ def main():
             json.dump({"hub": hub, "listed": listed, "info": info, "pages": pages}, fh)
 
     t1 = time.time()
-    # validated selectors are saved per site + prompt: repeat runs need no LLM and give the same answers
-    sel_path = os.path.join("selectors", slug(a.site) + "--" + slug(a.prompt) + ".json")
-    names = [f["name"] for f in plan["fields"]]
-    known = seed = None
-    if os.path.exists(sel_path):
-        saved = json.load(open(sel_path, encoding="utf-8"))
-        if saved.get("fields_in_plan") == names:  # the plan changed since: learn again from scratch
-            known, seed = (None, saved["selectors"]) if a.revalidate else (saved, None)
+    llm.set_stage("extract")
     try:
         got, report = Extractor(brain, plan).run({u: p["html"] for u, p in pages.items()}, info.get("item_pattern", ""),
                                                  guess=a.guess, known=known, seed=seed, log=log)
     except LLMUnavailable as e:
         raise SystemExit(f"LLM unavailable ({e}). Pages are cached: rerun later with --reuse-pages, "
                          f"point LLM_BASE_URL at another model, or use --guess for laya-only (unvalidated) values.")
-    if not known or report.get("changed"):  # new, or improved by the coverage check
+    spent = llm.cost()
+    if not known or report.get("changed") or not (recipe or {}).get("listing"):
         os.makedirs("selectors", exist_ok=True)
-        with open(sel_path, "w", encoding="utf-8") as fh:
-            json.dump({"selectors": report["selectors"], "fields": report["fields"],
+        with open(recipe_path, "w", encoding="utf-8") as fh:
+            json.dump({"site": a.site, "prompt": a.prompt, "listing": hub, "item_pattern": info.get("item_pattern", ""),
+                       "paging": info.get("mode"), "selectors": report["selectors"], "fields": report["fields"],
                        "coverage_checked": report["coverage_checked"], "fields_in_plan": names,
-                       "validated_on": (known or {}).get("validated_on") or time.strftime("%Y-%m-%d")}, fh, indent=2)
+                       "validated_on": (known or {}).get("validated_on") or time.strftime("%Y-%m-%d"),
+                       # what the AI cost to write this scraper (tokens as the API reported them)
+                       "build_cost": (known or {}).get("build_cost") or spent}, fh, indent=2)
     log(f"extracted in {time.time() - t1:.0f}s  [{time.time() - t0:.0f}s total, {llm.calls['n']} LLM calls]")
 
     items = [{"url": u, **got[u]} for u in listed if u in got]
-    names = [x["name"] for x in plan["fields"]]
     for x in items[:12]:
         log("  " + " | ".join(str(x.get(n) if not isinstance(x.get(n), list) else "; ".join(x[n][:2]))[:38] for n in names[:4]))
     filled = {n: sum(1 for x in items if x.get(n)) for n in names}
     log("filled: " + ", ".join(f"{n} {c}/{len(items)}" for n, c in filled.items()))
+    log("LLM cost of this run: " + ("none, the recipe did all the work" if spent["total"]["calls"] == 0 else
+        ", ".join(f"{k} {v['calls']} calls ${v['usd']:.4f}" for k, v in spent.items())
+        + f"  ({spent['total']['in']:,} tokens in, {spent['total']['out']:,} out)"))
 
     result = {"site": a.site, "prompt": a.prompt, "plan": plan, "listing": hub, "paging": info, "fields": report["fields"],
-              "selectors": report["selectors"],
-              "filled": filled, "seconds": round(time.time() - t0), "items": items}
+              "selectors": report["selectors"], "filled": filled, "seconds": round(time.time() - t0),
+              "llm_cost": spent, "items": items}
     if a.out and a.out.endswith(".csv"):
         with open(a.out, "w", newline="", encoding="utf-8-sig") as fh:
             w = csv.DictWriter(fh, fieldnames=["url"] + names + [f"{n}_confidence" for n in names])

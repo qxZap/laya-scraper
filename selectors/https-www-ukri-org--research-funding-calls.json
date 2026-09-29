@@ -1,0 +1,87 @@
+{
+  "site": "https://www.ukri.org/",
+  "prompt": "research funding calls",
+  "listing": "https://www.ukri.org/opportunity/",
+  "item_pattern": "/opportunity/",
+  "paging": "next-link",
+  "selectors": {
+    "title": [
+      "h1#skipnav-target"
+    ],
+    "funder": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells > a.ukri-funder__link"
+    ],
+    "deadline": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells || Closing date:"
+    ],
+    "opening_date": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells > time"
+    ],
+    "funding_amount": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells || Maximum award:",
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells || Award range:"
+    ],
+    "eligibility": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.govuk-accordion.ukri-accordion > div.govuk-accordion__section > div.govuk-accordion__section-content > p"
+    ],
+    "description": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-content.single-opportunity__entry-content > div.description > p"
+    ],
+    "programme_type": [
+      "div.govuk-width-container > div.govuk-grid-row > div.single-opportunity__content-container.main-content-column > div.entry-header > div.entry-meta.single-opportunity__entry-meta > dl.govuk-table.opportunity__summary > div.govuk-table__row > dd.govuk-table__cell.opportunity-cells || Funding type:"
+    ]
+  },
+  "fields": {
+    "title": "validated (4/4 correct)",
+    "funder": "validated (4/4 correct)",
+    "deadline": "validated (4/4 correct)",
+    "opening_date": "validated (4/4 correct)",
+    "funding_amount": "validated (3/4 correct)",
+    "eligibility": "validated (4/4 correct)",
+    "description": "validated (4/4 correct)",
+    "guidelines_url": "unreliable ({'missed': 2, 'absent': 2})",
+    "programme_type": "validated (4/4 correct)"
+  },
+  "coverage_checked": {
+    "funding_amount": "2026-09-29",
+    "eligibility": "2026-09-29"
+  },
+  "fields_in_plan": [
+    "title",
+    "funder",
+    "deadline",
+    "opening_date",
+    "funding_amount",
+    "eligibility",
+    "description",
+    "guidelines_url",
+    "programme_type"
+  ],
+  "validated_on": "2026-09-29",
+  "build_cost": {
+    "plan": {
+      "calls": 1,
+      "in": 517,
+      "out": 1606,
+      "usd": 0.0021
+    },
+    "locate": {
+      "calls": 1,
+      "in": 2481,
+      "out": 197,
+      "usd": 0.001
+    },
+    "extract": {
+      "calls": 23,
+      "in": 130781,
+      "out": 22408,
+      "usd": 0.0661
+    },
+    "total": {
+      "calls": 25,
+      "in": 133779,
+      "out": 24211,
+      "usd": 0.0692
+    }
+  }
+}

@@ -24,6 +24,47 @@ The work is split by what each part is good at:
 - **[laya](https://github.com/NandhaKishorM/laya)**, a small non-generative decision model on the GPU, does the per-page judging: crawling for the listing and scoring confidence on every value.
 - **Plain code** does the rest: pagination, page decomposition and CSS selection.
 
+## The AI writes the scraper once; plain code runs it
+
+![Pipeline: AI steps vs plain-code steps](docs/img/01-pipeline.png)
+
+The LLM doesn't scrape anything itself. On the first run it **writes a scraper**: a small JSON *recipe* saved in [`selectors/`](selectors/), holding the listing URL, how to page through it and one proven selector per field. Every later run is plain code following that recipe, with no AI and no API cost, and gives the same answers each time.
+
+The following numbers are measured, not estimated. This one run was built from nothing:
+
+```
+python harvest.py https://www.ukri.org/ "research funding calls"
+```
+
+| | LLM calls | Tokens (in / out) | LLM cost | Time (100 items) |
+|---|---|---|---|---|
+| **Build** (first run) | 25 | 133,779 / 24,211 | **$0.069** | 7.7 min |
+| ↳ plan: prompt to schema | 1 | 517 / 1,606 | $0.002 | |
+| ↳ locate: judge the listing | 1 | | $0.001 | |
+| ↳ extract: map, validate and repair selectors | 23 | | $0.066 | |
+| **Every run after** (fresh pages, same recipe) | **0** | 0 | **$0** | 78 s |
+
+Prices use MiniMax-M3 ($0.30 in / $1.20 out per million tokens). The rates come from `LLM_PRICE_IN` and `LLM_PRICE_OUT`, so set them to your model's prices, or to 0 for a local model. Every run prints its cost by stage and stores the build cost in the recipe:
+
+```
+LLM cost of this run: plan 1 calls $0.0021, locate 1 calls $0.0010, extract 23 calls $0.0661, total 25 calls $0.0692
+LLM cost of this run: none, the recipe did all the work
+```
+
+Build costs vary by site. A clean site like this one costs a few cents, while a free-form blog of grants (fundsforngos.org) needed 46 calls, because values hidden in prose need text patterns and more repair rounds. As rough arithmetic from this run: 100 sites like UKRI would cost about $7 to build, and then nothing to run.
+
+| | |
+|---|---|
+| ![Plan](docs/img/02-plan.png) The prompt becomes a definition, what the target is **not**, and typed fields | ![Find the listing](docs/img/03-find-listing.png) The crawler and laya judge pages; the LLM picks the real listing |
+| ![Validate](docs/img/04-validate.png) Every selector is graded on sample pages and repaired before it's trusted | ![Recipe](docs/img/05-recipe.png) The recipe: this JSON file *is* the scraper |
+| ![Re-run](docs/img/06-rerun.png) The same recipe on fresh pages: 0 LLM calls | ![Pricing](docs/img/07-pricing.png) Build once for cents, run for $0 |
+
+**Bring your own LLM.** Copy [`.env.example`](.env.example) to `.env` and pick a block:
+- any **OpenAI-compatible** endpoint (MiniMax, OpenAI, or a local Ollama, LM Studio or vLLM server),
+- or any **Anthropic-compatible** one (Claude, or MiniMax's Anthropic API).
+
+The LLM is needed only while a recipe is being built or re-validated.
+
 ## One prompt, any site (`harvest.py`)
 
 ```
@@ -40,7 +81,7 @@ python harvest.py https://catalog.data.gov/ "datasets" --out datasets.json
    - **Validate and repair.** The selectors run on 4 sample pages, 2 of them unseen, and the LLM grades every value against the page. A field that failed goes back to the LLM with what went wrong. A selector that gave wrong values is replaced; one that was right but missed pages gets a fallback. Justia's "Patent number" and "Publication number" (granted vs. applications) were learned this way.
    - **Apply.** Only validated selectors produce values. Type checks run on every value: dates must parse, links must be links, names must look like names. laya adds a confidence score per value. A field that never validates stays **empty** and is marked `unreliable`, because a blank is honest and a wrong value is not.
    - **Coverage check.** A field that validated but comes out empty on more than 20% of pages gets one more look: 2 of those pages go to the LLM, and the new form is kept only if it grades correct. ODI's abstracts went from 79 to 97 of 100 this way. The check is remembered for 30 days.
-5. **Remember.** Validated selectors are saved in `selectors/` per site and prompt. **Repeat runs make no LLM calls**, take about 20 s per 100 items, and give the same answers. Use `--revalidate` after a site redesign.
+5. **Remember.** The recipe (listing, paging, validated selectors and text patterns, build cost) is saved in `selectors/` per site and prompt. **Repeat runs make no LLM calls**: they read the listing from the recipe, page through it and apply the selectors. Use `--revalidate` after a site redesign; it re-grades the saved selectors and repairs only what broke. Use `--relocate` if the listing itself moved.
 
 ### Results
 
@@ -67,7 +108,7 @@ The LLM cost depends on the site, not on the number of items.
 
 **Being gentle.** LLM calls go one at a time, at least `LLM_MIN_GAP` seconds apart (default 3), with retries on 429/5xx. Each run reports how many calls it made. robots.txt is respected (`IGNORE_ROBOTS=1` for sites you own). Plain requests are spaced `POLITE_DELAY` apart per host (default 0.25 s), and the browser opens at most `--tabs` pages at once.
 
-**LLM setup.** Set `MINIMAX_API_KEY` (or `LLM_API_KEY`) in the environment or in a git-ignored `.env`. `LLM_BASE_URL` and `LLM_MODEL` point it at any OpenAI-compatible endpoint, for example Ollama at `http://localhost:11434/v1`. `LLM_API=anthropic` switches to the Anthropic-style API. If the LLM is unavailable, the run stops with a clear message. Pages stay cached (`--reuse-pages`), so nothing is lost.
+**LLM setup.** See [`.env.example`](.env.example). Set `LLM_API_KEY` (or `MINIMAX_API_KEY`) in the environment or in a git-ignored `.env`. `LLM_BASE_URL` and `LLM_MODEL` point it at any OpenAI-compatible endpoint, for example Ollama at `http://localhost:11434/v1`. `LLM_API=anthropic` switches to the Anthropic-style API. `LLM_PRICE_IN` and `LLM_PRICE_OUT` set the prices used in the cost report. If the LLM is unavailable, the run stops with a clear message. Pages stay cached (`--reuse-pages`), so nothing is lost.
 
 ## Stage 1: finding the list (`scrape.py`)
 
@@ -206,8 +247,9 @@ npm install
 .venv/Scripts/python test_parse.py          # structure self-checks, no network → "ok"
 .venv/Scripts/python test_list.py           # pagination + fact extraction checks → "ok"
 .venv/Scripts/python test_extract.py        # decomposition, facts, type checks, selectors → "ok"
+.venv/Scripts/python test_llm.py            # cost accounting → "ok"
 
-echo MINIMAX_API_KEY=sk-... > .env           # or LLM_BASE_URL/LLM_MODEL for another endpoint
+cp .env.example .env                         # then fill in one block: OpenAI- or Anthropic-compatible, or local
 .venv/Scripts/python harvest.py https://odi.org/en/ "publications" --out odi.csv
 ```
 
@@ -223,7 +265,8 @@ On macOS or Linux, use `.venv/bin/python`. The first run downloads the laya chec
 | `--hub URL` | – | Skip locating; this is the listing |
 | `--out` | – | `.csv` (values plus a confidence column per field) or `.json` (everything, including the plan and field status) |
 | `--reuse-pages` | – | Use the page cache: re-extract without crawling or fetching |
-| `--revalidate` | – | Ignore the saved selectors for this site; map and validate again |
+| `--revalidate` | – | Re-check this site's recipe with the LLM: grade the saved selectors, repair what broke |
+| `--relocate` | – | Find the listing again instead of using the recipe's |
 | `--replan` | – | Ask the LLM for a fresh plan for this prompt |
 | `--guess` | – | Fill fields that failed validation with laya's DOM walk, marked as guesses |
 
@@ -277,7 +320,8 @@ Details that made parallel browsing reliable:
 | [`extract.py`](extract.py) | Page decomposition, LLM field mapping, validation and repair, coverage check, laya confidence |
 | [`llm.py`](llm.py) | OpenAI- or Anthropic-compatible client: pacing, retries, JSON answers |
 | [`grade.py`](grade.py) | Quality spot-check: the LLM grades extracted values against the page |
-| [`plans/`](plans/), [`selectors/`](selectors/) | The saved plans (schemas) per prompt and the validated selectors per site |
+| [`plans/`](plans/), [`selectors/`](selectors/) | The saved plans (schemas) per prompt, and the recipes per site and prompt: listing, paging, validated selectors, build cost |
+| [`.env.example`](.env.example) | LLM configuration for OpenAI- or Anthropic-compatible endpoints, including local models |
 | [`scrape.py`](scrape.py) | Stage 1: crawler, parser, laya "brain" and scoring. Also robots.txt and polite fetching |
 | [`list.py`](list.py) | Stage 2: pagination strategies, item collection and fact extraction (~320 lines) |
 | [`render.js`](render.js) | Real-browser worker: parallel off-screen windows, Cloudflare handling, list expansion (load-more and scroll), JSON lines over stdin/stdout (~130 lines) |

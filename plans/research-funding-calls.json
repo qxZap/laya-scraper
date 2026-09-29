@@ -1,0 +1,86 @@
+{
+  "target": "funding opportunities",
+  "singular": "funding opportunity",
+  "description": "An open announcement from a funder (government agency, foundation, charity, or university) inviting researchers to submit a research proposal by a stated deadline for a defined amount of money; it excludes grants already awarded, sample proposals, news coverage about funding, and grant-writing advice.",
+  "confusables": [
+    "past or awarded grants and recipient lists",
+    "sample or example grant proposals",
+    "news and blog posts about research funding",
+    "funder profiles and about-the-organisation pages",
+    "grant-writing guides and how-to articles",
+    "closed or expired calls with no current deadline"
+  ],
+  "listing_names": [
+    "Funding Opportunities",
+    "Grants",
+    "Open Calls",
+    "Research Funding",
+    "Funding Calls",
+    "Available Grants",
+    "Current Funding",
+    "Calls for Proposals"
+  ],
+  "examples": [
+    "NSF Graduate Research Fellowship Program (GRFP) 2024",
+    "Horizon Europe Marie Skłodowska-Curie Actions Postdoctoral Fellowships 2025",
+    "Wellcome Trust Discovery Awards - Open Call"
+  ],
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "description": "Headline name of the call as shown on its listing page, often including the programme acronym and year.",
+      "example": "NSF Graduate Research Fellowship Program (GRFP) 2024"
+    },
+    {
+      "name": "funder",
+      "type": "text",
+      "description": "Name of the organisation issuing the call, usually displayed as a link or logo caption near the title.",
+      "example": "U.S. National Science Foundation"
+    },
+    {
+      "name": "deadline",
+      "type": "date",
+      "description": "Final submission deadline for proposals, typically shown as a calendar date with optional time and timezone.",
+      "example": "2025-04-15"
+    },
+    {
+      "name": "opening_date",
+      "type": "date",
+      "description": "Date the call opened or will open for submissions, often listed above the deadline.",
+      "example": "2024-09-01"
+    },
+    {
+      "name": "funding_amount",
+      "type": "money",
+      "description": "Maximum or total funding available per award, usually shown with a currency symbol or ISO code (e.g., $, €, £, USD).",
+      "example": "$50,000",
+      "pattern": "^[\\$€£¥]?\\s?[0-9][0-9,\\.]*\\s?(USD|EUR|GBP|CAD|AUD)?\\s?([kKmM]illion)?$"
+    },
+    {
+      "name": "eligibility",
+      "type": "text",
+      "description": "Who can apply, often a short paragraph or bullet list covering career stage, nationality, and discipline.",
+      "example": "Early-career researchers within 7 years of PhD, any nationality, all disciplines."
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "Short summary or abstract of the call, usually the first long paragraph on the page.",
+      "example": "Supports graduate students pursuing research-based master's and doctoral degrees in STEM fields."
+    },
+    {
+      "name": "guidelines_url",
+      "type": "url",
+      "description": "Link to the official call document, guidelines PDF, or full programme page.",
+      "example": "https://www.nsfgrfp.org/2024-guidelines"
+    },
+    {
+      "name": "programme_type",
+      "type": "text",
+      "description": "Category of the call such as Fellowship, Grant, Prize, or Contract, sometimes shown as a tag.",
+      "example": "Fellowship"
+    }
+  ],
+  "prompt": "research funding calls"
+}

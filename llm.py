@@ -23,6 +23,31 @@ def _env():
 
 
 calls = {"n": 0}  # completions made by this process, for the run summary
+# token usage per stage, as the API reports it: what building a scraper actually cost
+usage = {}
+stage = ["other"]
+
+
+def set_stage(name):
+    """Label the following calls ("plan", "locate", "extract") so the cost report can be split by stage."""
+    stage[0] = name
+
+
+def cost():
+    """{stage: {calls, in, out, usd}} plus a "total" row. Prices per million tokens come from LLM_PRICE_IN /
+    LLM_PRICE_OUT (defaults: MiniMax-M3 list price, $0.30 in / $1.20 out; set 0 for a local model)."""
+    p_in, p_out = float(os.environ.get("LLM_PRICE_IN", "0.30")), float(os.environ.get("LLM_PRICE_OUT", "1.20"))
+    rows = {k: {**v, "usd": round((v["in"] * p_in + v["out"] * p_out) / 1e6, 4)} for k, v in usage.items()}
+    tot = {k: sum(r[k] for r in rows.values()) for k in ("calls", "in", "out")}
+    rows["total"] = {**tot, "usd": round(sum(r["usd"] for r in rows.values()), 4)}
+    return rows
+
+
+def _count(u_in, u_out):
+    row = usage.setdefault(stage[0], {"calls": 0, "in": 0, "out": 0})
+    row["calls"] += 1
+    row["in"] += int(u_in or 0)
+    row["out"] += int(u_out or 0)
 _gate = threading.Lock()
 _last_call = [0.0]
 
@@ -67,7 +92,9 @@ def _chat(prompt, system, max_tokens):
                           json={"model": model, "system": system, "max_tokens": max_tokens,
                                 "messages": [{"role": "user", "content": prompt}]})
         r.raise_for_status()
-        text = "".join(b.get("text", "") for b in r.json()["content"])
+        j = r.json()
+        _count(j.get("usage", {}).get("input_tokens"), j.get("usage", {}).get("output_tokens"))
+        text = "".join(b.get("text", "") for b in j["content"])
     else:
         base = os.environ.get("LLM_BASE_URL", "https://api.minimax.io/v1")
         msgs = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": prompt}]
@@ -75,7 +102,9 @@ def _chat(prompt, system, max_tokens):
                           headers={"Authorization": f"Bearer {key}"} if key else {},
                           json={"model": model, "messages": msgs, "max_tokens": max_tokens})
         r.raise_for_status()
-        text = r.json()["choices"][0]["message"]["content"]
+        j = r.json()
+        _count(j.get("usage", {}).get("prompt_tokens"), j.get("usage", {}).get("completion_tokens"))
+        text = j["choices"][0]["message"]["content"]
     return re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()  # reasoning models think out loud
 
 
