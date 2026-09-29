@@ -1,6 +1,30 @@
 # laya-scraper
 
-**Give it a website and one line saying what you want (publications, policy papers, grants, patents, datasets...). It finds the listing, pages through it, designs a schema and extracts every item into a table.**
+**An AI writes the scraper once. Plain code runs it after that.**
+
+Give it a website and one line of plain English: "grants", "patents", "datasets", "policy papers", anything. It finds the listing, pages through it, designs a schema and extracts every item into a table. The AI is used only to *write* a small recipe for that site. Every run after is plain code: no AI, $0, the same answers each time.
+
+[![Watch the 6-minute narrated explainer](docs/img/video-poster.png)](https://github.com/qxZap/laya-scraper/releases/tag/v0.1.0)
+
+▶ **[Watch the 6-minute narrated explainer](https://github.com/qxZap/laya-scraper/releases/tag/v0.1.0)**. The video is attached to the v0.1.0 release. It walks through one real run: from the prompt to the recipe, what each step costs, and the run with no AI.
+
+| | LLM calls | LLM cost | Time for 100 items |
+|---|---|---|---|
+| Build a scraper for a site (first run) | 25 | **$0.069** | 7.7 min |
+| Every run after | **0** | **$0** | 78 s |
+
+These were measured on ukri.org with `"research funding calls"`. Messier sites take more calls. [Details below](#the-ai-writes-the-scraper-once-plain-code-runs-it).
+
+```bash
+git clone https://github.com/qxZap/laya-scraper && cd laya-scraper
+python -m venv .venv && .venv/Scripts/python -m pip install -r requirements.txt && npm install
+cp .env.example .env                     # an OpenAI- or Anthropic-compatible key, or a local model
+.venv/Scripts/python harvest.py https://www.ukri.org/ "research funding calls" --out calls.csv
+```
+
+(On macOS or Linux use `.venv/bin/python`. GPU setup and details are in [Quickstart](#quickstart).)
+
+Example: patents from a directory site. The LLM repairs two fields and learns a second form of each for patent applications:
 
 ```
 $ python harvest.py https://patents.justia.com/ "patents"
@@ -328,8 +352,27 @@ Details that made parallel browsing reliable:
 | [`test_parse.py`](test_parse.py), [`test_list.py`](test_list.py), [`test_extract.py`](test_extract.py) | Offline checks: lists vs items vs nav, pagination, decomposition, labelled facts, type checks, fallback selectors |
 | [`examples/`](examples/) | `harvest/`: final tables for the five targets. The rest: stage 1 reports and stage 2 results for ODI, Chatham House and Brookings |
 
-## Credits
+## Contributing
 
-The decision model is [laya](https://github.com/NandhaKishorM/laya) by NandhaKishorM (Apache-2.0). Cloudflare-capable browsing comes from [puppeteer-real-browser](https://github.com/zfcsoftware/puppeteer-real-browser).
+Issues and pull requests are welcome. The most useful contributions:
+- **A site where it fails.** Open an issue with the site, the prompt and the run's log.
+- **Recipes** for new sites: a `plans/*.json` plus `selectors/*.json`, and an example CSV.
+- **Better defaults:** chrome detection, label matching and pagination strategies. Keep changes generic, with no per-site rules.
 
-MIT licensed.
+Before sending code, run the offline checks. They need no network, GPU or LLM:
+
+```bash
+python test_parse.py && python test_list.py && python test_extract.py && python test_llm.py
+```
+
+Please crawl politely. robots.txt is respected by default, and requests are throttled per host. Check a site's terms before scraping it at scale.
+
+## Credits and license
+
+- [laya](https://github.com/NandhaKishorM/laya) by NandhaKishorM (Apache-2.0) is the decision model.
+- [puppeteer-real-browser](https://github.com/zfcsoftware/puppeteer-real-browser) (ISC) provides the Cloudflare-capable browsing.
+- [requests](https://github.com/psf/requests) (Apache-2.0), [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/) (MIT) and [PyTorch](https://pytorch.org) (BSD-3-Clause) are also used.
+
+The explainer video was made with [HyperFrames](https://github.com/heygen-com/hyperframes), with narration by [Kokoro](https://github.com/hexgrad/kokoro) TTS.
+
+laya-scraper itself is [MIT licensed](LICENSE).
