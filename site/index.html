@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>laya-scraper: an AI writes the scraper once</title>
+<meta name="description" content="Give it a website and one line of plain English and it writes a scraper recipe: a validated table of every item. Building costs about seven cents. Every run after is plain code, and free.">
+<link rel="canonical" href="https://laya.vibe-coding.fans/">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0B1220">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="laya-scraper">
+<meta property="og:url" content="https://laya.vibe-coding.fans/">
+<meta property="og:title" content="laya-scraper: an AI writes the scraper once">
+<meta property="og:description" content="A website and one line of English become a validated table. Building the scraper costs about seven cents; every run after that is plain code, and free.">
+<meta property="og:image" content="https://laya.vibe-coding.fans/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="laya-scraper: an AI writes the scraper once, plain code runs it after that. Build 25 LLM calls for $0.069, every run after 0 calls and $0.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="laya-scraper: an AI writes the scraper once">
+<meta name="twitter:description" content="A website and one line of English become a validated table. Building the scraper costs about seven cents; every run after that is free.">
+<meta name="twitter:image" content="https://laya.vibe-coding.fans/og.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="favicon-96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "laya-scraper",
+  "url": "https://laya.vibe-coding.fans/",
+  "codeRepository": "https://github.com/qxZap/laya-scraper",
+  "programmingLanguage": ["Python", "JavaScript"],
+  "license": "https://opensource.org/licenses/MIT",
+  "description": "An AI writes the scraper once, plain code runs it after that. A website and one line of plain English become a validated table of every item on a listing.",
+  "author": { "@type": "Person", "name": "qxZap", "url": "https://github.com/qxZap" }
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="#main">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" focusable="false">
+        <rect width="32" height="32" rx="8" fill="#16203A"/>
+        <rect x="7" y="8" width="18" height="3.4" rx="1.7" fill="#34D399"/>
+        <rect x="7" y="14.3" width="18" height="3.4" rx="1.7" fill="#7D8CA6"/>
+        <rect x="7" y="20.6" width="11" height="3.4" rx="1.7" fill="#7D8CA6"/>
+      </svg>
+      laya-scraper
+    </a>
+    <nav aria-label="Sections">
+      <ul class="nav">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#cost">Cost</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#start">Quickstart</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-ghost top-repo" href="https://github.com/qxZap/laya-scraper">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2A10 10 0 0 0 8.8 21.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.2-.2-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7 3.6 3.6 0 0 1 .1-2.7s.8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></svg>
+      GitHub
+    </a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Open source, MIT</p>
+        <h1>An AI writes the scraper <span class="hl">once</span>. Plain code runs it after that.</h1>
+        <p class="lead">Give it a website and one line of plain English: "grants", "patents", "datasets", "policy papers". It finds the listing, pages through it, designs a schema and extracts every item into a table. The AI is used only to <em>write</em> a small recipe for that site. Every run after is plain code: no AI, no cost, the same answers each time.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#video">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg>
+            Watch the 6 minute explainer
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/qxZap/laya-scraper">Read the code</a>
+        </div>
+      </div>
+
+      <figure class="term" aria-label="A terminal session: one command turns a website and the word patents into a table, with two fields repaired along the way.">
+        <figcaption class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span> harvest.py</figcaption>
+        <pre class="term-body"><code><span class="c-p">$</span> python harvest.py https://patents.justia.com/ <span class="c-s">"patents"</span>
+<span class="c-k">plan</span>:   fields: title, patent_number, inventors,
+        assignee, filing_date <span class="c-d">...</span>
+<span class="c-k">locate</span>: LLM picked #3 /company/linkedin
+        <span class="c-d">(lists actual patents, paginated)</span>
+<span class="c-k">paging</span>: next-link, 100 items
+  round 0: title ok, patent_number <span class="c-f">FAIL</span>,
+           inventors ok, assignee <span class="c-f">FAIL</span> <span class="c-d">...</span>
+  round 1: title ok, patent_number <span class="c-g">ok</span>,
+           inventors ok, assignee <span class="c-g">ok</span> <span class="c-d">...</span>
+    patent_number <span class="c-g">validated</span> <span class="c-d">(4/4 correct)</span>
+    assignee      <span class="c-g">validated</span> <span class="c-d">(4/4 correct)</span>
+<span class="c-k">filled</span>: title 100/100, patent_number 100/100,
+        inventors 100/100, assignee 100/100 <span class="c-d">...</span></code></pre>
+      </figure>
+    </div>
+
+    <div class="wrap">
+      <ul class="stats">
+        <li class="stat"><b>25</b><span>LLM calls to build a scraper for a site, once</span></li>
+        <li class="stat stat-amber"><b>$0.069</b><span>what that build cost on ukri.org, measured</span></li>
+        <li class="stat stat-green"><b>$0</b><span>every run after, because no AI is involved</span></li>
+        <li class="stat"><b>78s</b><span>to pull 100 items on a re-run</span></li>
+      </ul>
+      <p class="fineprint">Measured on ukri.org with the prompt "research funding calls", priced with MiniMax-M3 at $0.30 in and $1.20 out per million tokens. Messier sites take more calls.</p>
+    </div>
+  </section>
+
+  <section id="video" class="section" aria-labelledby="video-h">
+    <div class="wrap narrow">
+      <h2 id="video-h">Watch one real run, start to finish</h2>
+      <p class="section-lead">Six narrated minutes: the prompt becomes a plan, the crawler finds the listing, selectors are graded and repaired, and the same recipe runs again with no AI at all.</p>
+      <video class="video" controls preload="none" playsinline poster="img/video-poster.webp" width="1280" height="720">
+        <!-- Served from R2 so it streams from the edge; the copy in this repo is the fallback. -->
+        <source src="https://cdn.vibe-coding.fans/laya/explainer-720p.mp4" type="video/mp4">
+        <source src="explainer.mp4" type="video/mp4">
+        Your browser cannot play this video. The same explainer is attached to the v0.1.0 release on GitHub.
+      </video>
+      <p class="video-note">720p, 8 MB, 6 min 24 s. There is also a <a href="https://cdn.vibe-coding.fans/laya/explainer-1080p.mp4">1080p version</a> at 42 MB.</p>
+    </div>
+  </section>
+
+  <section id="how" class="section" aria-labelledby="how-h">
+    <div class="wrap">
+      <h2 id="how-h">The AI writes the scraper. Plain code runs it.</h2>
+      <p class="section-lead">The LLM never scrapes anything. On the first run it writes a recipe: a small JSON file holding the listing URL, how to page through it, and one proven selector per field. Every later run follows that recipe.</p>
+      <figure class="shot wide">
+        <img src="img/01-pipeline.webp" alt="Diagram: the AI steps, plan, locate and map, happen once and produce a recipe; the plain code steps, page, fetch and apply selectors, run every time." width="1200" height="675" loading="lazy" decoding="async">
+      </figure>
+
+      <div class="cards">
+        <article class="card">
+          <h3>An LLM makes a handful of decisions</h3>
+          <p>It turns your prompt into a plan and a field schema, picks the real listing among the crawler's candidates, maps each field to a page element, and grades its own choices. MiniMax by default, or any OpenAI or Anthropic compatible endpoint, including a local model.</p>
+        </article>
+        <article class="card">
+          <h3><a href="https://github.com/NandhaKishorM/laya">laya</a> does the per-page judging</h3>
+          <p>A small non-generative decision model on the GPU: is this page about the target, is it a list or a single item, and how confident is each extracted value. Hundreds of questions per run, answered in one batched pass. It also runs on CPU, more slowly.</p>
+        </article>
+        <article class="card">
+          <h3>Plain code does the rest</h3>
+          <p>Pagination, page decomposition and CSS selection. Four paging strategies are tried in order: a next link, a load-more button or infinite scroll, a "view all" landing page, then probing <code>?page=</code> style URLs. Nothing is hard-coded per site.</p>
+        </article>
+      </div>
+
+      <ol class="steps">
+        <li><b>Plan.</b> One LLM call turns the prompt into a target, the names sites use for such a listing, and five to nine typed fields. It is plain JSON: edit it and the next run uses your schema.</li>
+        <li><b>Locate.</b> The crawler proposes candidates and the LLM picks the real listing. A complete listing beats a sub-collection.</li>
+        <li><b>Paginate.</b> Up to the item limit you set, using whichever paging strategy the site actually has.</li>
+        <li><b>Extract.</b> Each page is decomposed into metadata and labelled facts, fields are mapped to elements, then every selector is graded on four sample pages and repaired until it is right.</li>
+        <li><b>Remember.</b> The recipe is saved per site and prompt. Repeat runs make no LLM calls. After a redesign, <code>--revalidate</code> re-grades the saved selectors and repairs only what broke.</li>
+      </ol>
+
+      <div class="gallery">
+        <figure class="shot">
+          <img src="img/02-plan.webp" alt="The plan: a definition of the target, what it is not, and the typed fields." width="1200" height="675" loading="lazy" decoding="async">
+          <figcaption>The prompt becomes a definition, what the target is <em>not</em>, and typed fields.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/03-find-listing.webp" alt="Finding the listing: crawled pages scored, with the real listing picked out." width="1200" height="675" loading="lazy" decoding="async">
+          <figcaption>The crawler and laya judge pages; the LLM picks the real listing.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/04-validate.webp" alt="Validation: each selector graded on sample pages, failures sent back for repair." width="1200" height="675" loading="lazy" decoding="async">
+          <figcaption>Every selector is graded on sample pages and repaired before it is trusted.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/05-recipe.webp" alt="The recipe file: listing URL, paging strategy and one selector per field." width="1200" height="675" loading="lazy" decoding="async">
+          <figcaption>The recipe: this JSON file <em>is</em> the scraper.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="cost" class="section" aria-labelledby="cost-h">
+    <div class="wrap narrow">
+      <h2 id="cost-h">What it costs, measured</h2>
+      <p class="section-lead">This run was built from nothing on ukri.org. Every run prints its own cost by stage, and the build cost is stored in the recipe.</p>
+      <div class="table-wrap">
+        <table>
+          <caption class="vh">Cost of building a scraper compared with running it again</caption>
+          <thead>
+            <tr><th scope="col">Run</th><th scope="col">LLM calls</th><th scope="col">Tokens in / out</th><th scope="col">LLM cost</th><th scope="col">Time, 100 items</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Build, the first run</th><td class="num">25</td><td class="num">133,779 / 24,211</td><td class="num amber">$0.069</td><td class="num">7.7 min</td></tr>
+            <tr><td class="sub" colspan="5">plan, one call: $0.002 &middot; locate, one call: $0.001 &middot; extract, map, validate and repair, 23 calls: $0.066</td></tr>
+            <tr><th scope="row">Every run after, on fresh pages</th><td class="num green">0</td><td class="num">0</td><td class="num green">$0</td><td class="num">78 s</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre class="quote"><code>LLM cost of this run: plan 1 calls $0.0021, locate 1 calls $0.0010,
+                      extract 23 calls $0.0661, total 25 calls $0.0692
+LLM cost of this run: none, the recipe did all the work</code></pre>
+      <p>Build costs vary by site. A clean site costs a few cents; a free-form blog of grants needed 46 calls, because values buried in prose need text patterns and more repair rounds. As rough arithmetic, a hundred sites like UKRI would cost about $7 to build, and nothing to run. Set <code>LLM_PRICE_IN</code> and <code>LLM_PRICE_OUT</code> to your model's prices, or to zero for a local one.</p>
+      <figure class="shot">
+        <img src="img/07-pricing.webp" alt="Pricing: build once for cents, then every run costs nothing." width="1200" height="675" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </section>
+
+  <section id="results" class="section" aria-labelledby="results-h">
+    <div class="wrap narrow">
+      <h2 id="results-h">Five targets, five sites, 100 items each</h2>
+      <p class="section-lead">Quality here is an LLM check of ten random items per site against the page. That is a consistent proxy, not a hand-labelled ground truth.</p>
+      <div class="table-wrap">
+        <table>
+          <caption class="vh">Listing found, paging strategy, precision and recall per site</caption>
+          <thead>
+            <tr><th scope="col">Target</th><th scope="col">Site</th><th scope="col">Listing found</th><th scope="col">Paging</th><th scope="col">Precision</th><th scope="col">Recall</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">patents</th><td>patents.justia.com</td><td><code>/company/linkedin</code></td><td>next-link</td><td class="num">100%</td><td class="num">94%</td></tr>
+            <tr><th scope="row">funding opportunities</th><td>ukri.org</td><td><code>/opportunity/</code></td><td>next-link</td><td class="num">97%</td><td class="num">91%</td></tr>
+            <tr><th scope="row">publications</th><td>odi.org</td><td><code>/en/publications/</code></td><td>next-link</td><td class="num">96%</td><td class="num">90%</td></tr>
+            <tr><th scope="row">policy papers</th><td>gov.uk</td><td><code>/search/policy-papers</code></td><td>probe <code>?page=</code></td><td class="num">100%</td><td class="num">77%</td></tr>
+            <tr><th scope="row">datasets</th><td>catalog.data.gov</td><td>the homepage</td><td>load-more</td><td class="num">96%</td><td class="num">70%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Precision is how often a filled value is right. Recall is how many of the values shown on the page were filled. The lower recall on gov.uk and data.gov is fields left deliberately blank and marked unreliable, not wrong values: a blank is honest, a wrong value is not.</p>
+      <div class="gallery">
+        <figure class="shot">
+          <img src="img/06-rerun.webp" alt="A re-run on fresh pages, making no LLM calls at all." width="1200" height="675" loading="lazy" decoding="async">
+          <figcaption>The same recipe on fresh pages: zero LLM calls.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="img/08-results.webp" alt="Results across the five sites, with precision and recall per target." width="1200" height="675" loading="lazy" decoding="async">
+          <figcaption>The five targets, each with 100 items collected.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="start" class="section" aria-labelledby="start-h">
+    <div class="wrap narrow">
+      <h2 id="start-h">Run it yourself</h2>
+      <p class="section-lead">Python 3.10 or newer and Node 18 or newer. An NVIDIA GPU is recommended; CPU works, more slowly. The first run downloads the laya checkpoint.</p>
+      <div class="code-block">
+        <button class="copy" type="button" data-copy="install">Copy</button>
+        <pre id="install"><code>git clone https://github.com/qxZap/laya-scraper &amp;&amp; cd laya-scraper
+python -m venv .venv &amp;&amp; .venv/Scripts/python -m pip install -r requirements.txt &amp;&amp; npm install
+cp .env.example .env     # an OpenAI or Anthropic compatible key, or a local model
+.venv/Scripts/python harvest.py https://www.ukri.org/ "research funding calls" --out calls.csv</code></pre>
+      </div>
+      <p>On macOS or Linux use <code>.venv/bin/python</code>. The LLM is needed only while a recipe is being built or re-validated, so point it at Ollama, LM Studio or vLLM and the whole thing runs on your own machine.</p>
+      <div class="code-block">
+        <button class="copy" type="button" data-copy="more">Copy</button>
+        <pre id="more"><code>python harvest.py https://catalog.data.gov/ "datasets" --out datasets.json
+python harvest.py https://odi.org/en/ "publications" --revalidate   # after a redesign
+python scrape.py https://odi.org/en/                                # just find the listing</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="limits-h">
+    <div class="wrap narrow">
+      <h2 id="limits-h">What it does not do</h2>
+      <ul class="limits">
+        <li><b>Weights are hand-tuned</b> on three sites. With twenty to fifty labelled sites they could be fitted properly.</li>
+        <li><b>Some labels are noisy.</b> The page kind is zero-shot, so an experts page can come out as "news". A confidence score is reported with each one.</li>
+        <li><b>Lists fed by a cursor-based API</b>, with no page URLs or buttons, are out of reach. Reading the JSON API directly is the next step.</li>
+        <li><b>Recipes go stale</b> when a site is redesigned. Re-run with <code>--revalidate</code>; it repairs only what broke.</li>
+        <li><b>Some fields stay blank</b> when they vary too much across a site's pages to validate. They are marked unreliable rather than guessed.</li>
+        <li><b>Terms of service.</b> robots.txt is respected and requests are throttled per host, but getting past a bot wall can still conflict with a site's terms. Check before crawling sites you do not own.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section closing" aria-labelledby="cta-h">
+    <div class="wrap narrow">
+      <h2 id="cta-h">Point it at a site and see</h2>
+      <p class="section-lead">The repo has the five example runs, their logs and the recipes they produced. If it fails on a site, an issue with the site, the prompt and the log is the most useful thing you can send.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/qxZap/laya-scraper">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2A10 10 0 0 0 8.8 21.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.2-.2-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7 3.6 3.6 0 0 1 .1-2.7s.8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></svg>
+          qxZap/laya-scraper
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/qxZap/laya-scraper/releases/tag/v0.1.0">The v0.1.0 release</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap narrow">
+    <p class="credits">Built on <a href="https://github.com/NandhaKishorM/laya">laya</a> by NandhaKishorM (Apache 2.0), <a href="https://github.com/zfcsoftware/puppeteer-real-browser">puppeteer-real-browser</a> (ISC), <a href="https://github.com/psf/requests">requests</a>, <a href="https://www.crummy.com/software/BeautifulSoup/">Beautiful Soup</a> and <a href="https://pytorch.org">PyTorch</a>. The explainer was made with <a href="https://github.com/heygen-com/hyperframes">HyperFrames</a>, narrated by <a href="https://github.com/hexgrad/kokoro">Kokoro</a>. laya-scraper itself is MIT licensed.</p>
+    <a class="vcf-home" href="https://vibe-coding.fans/">
+      <svg viewBox="0 0 66 66" width="28" height="28" aria-hidden="true" focusable="false"><rect x="6" y="6" width="58" height="58" rx="16" fill="#0B0B0F"/><rect x="2" y="2" width="54" height="54" rx="14" fill="#FF4FA3" stroke="#0B0B0F" stroke-width="4"/><path d="M26 18 13 29l13 11M33 18h7.5a5.5 5.5 0 0 1 0 11H36m4.5 0a5.5 5.5 0 0 1 0 11H33" fill="none" stroke="#0B0B0F" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>More free apps on <b>vibe-coding.fans</b></span>
+    </a>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+# laya-scraper
+
+> An AI writes the scraper once, plain code runs it after that. Give it a website and one line of plain English and it returns a validated table of every item on that site's listing.
+
+The LLM is used only to build a recipe for a site: the listing URL, the paging
+strategy and one proven selector per field. Runs after that make no LLM calls,
+so they cost nothing and return the same answers each time.
+
+Measured on ukri.org: the build took 25 LLM calls, 133,779 tokens in and 24,211
+out, $0.069 at MiniMax-M3 prices, 7.7 minutes for 100 items. Every run after
+that: 0 calls, $0, 78 seconds.
+
+Five targets tested at 100 items each, precision then recall:
+patents.justia.com 100/94, ukri.org 97/91, odi.org 96/90, gov.uk 100/77,
+catalog.data.gov 96/70. Low recall is fields left blank and marked unreliable
+rather than guessed.
+
+- Page: https://laya.vibe-coding.fans/
+- Source, MIT: https://github.com/qxZap/laya-scraper
+- Built on laya by NandhaKishorM, a small non-generative decision model.

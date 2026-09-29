@@ -4,6 +4,8 @@
 
 Give it a website and one line of plain English: "grants", "patents", "datasets", "policy papers", anything. It finds the listing, pages through it, designs a schema and extracts every item into a table. The AI is used only to *write* a small recipe for that site. Every run after is plain code: no AI, $0, the same answers each time.
 
+Site and explainer video: **[laya.vibe-coding.fans](https://laya.vibe-coding.fans/)**
+
 [![Watch the 6-minute narrated explainer](docs/img/video-poster.png)](https://github.com/qxZap/laya-scraper/releases/tag/v0.1.0)
 
 ▶ **[Watch the 6-minute narrated explainer](https://github.com/qxZap/laya-scraper/releases/tag/v0.1.0)**. The video is attached to the v0.1.0 release. It walks through one real run: from the prompt to the recipe, what each step costs, and the run with no AI.
