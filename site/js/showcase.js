@@ -1,10 +1,10 @@
-// Ads for our own apps (data in makers.js), ported from PasteSafe. One ad at a time in a bar fixed to the
-// bottom, each taking its turn; this page has no right rail for the three-card stack the apps show. Plain links, no tracking, no network: logos are local files and every animation is CSS.
+// Ads for our own apps (data in makers.js). showcase.css switches the layout:
+// wide screens stack up to three cards in the right rail and, when there are more ads than that, slide the stack up
+// one card at a time, so it always shows three however many there are; small screens show one ad at a time in a
+// bar fixed to the bottom. Plain links, no tracking, no network: logos are local files and every animation is CSS.
 const INTERVAL = 6000; // ms between moves; the timer's CSS animation runs this long, then the next ad comes in
 const RAIL_CARDS = 3;
-// This page shows the bar at every width: one ad at a time, no right rail to stack cards in.
-// The siblings point this at matchMedia('(min-width: 75rem)') and get the three-card stack.
-const RAIL = { matches: false, addEventListener() {} };
+const RAIL = matchMedia('(min-width: 75rem)');
 const REDUCE = matchMedia('(prefers-reduced-motion: reduce)');
 
 const h = (tag, className, ...kids) => {

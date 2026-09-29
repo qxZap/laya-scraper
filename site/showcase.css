@@ -1,7 +1,7 @@
 /* Ads for our own apps, built by js/showcase.js into the page's .showcase-slot element.
    Small screens: one ad at a time in a bar fixed to the bottom edge, with a thin timer line.
-   This page is one column with no rail beside it, so the bar stays a bar at every width: one ad at a time,
-   each taking its turn. The stacked rail layout lives in the apps' own copies of this file.
+   Wide screens (75rem and up): up to three cards stacked in the page's right rail. With more ads than that the stack
+   slides up one card each interval, so it always shows three however many there are.
    Each ad paints itself from its brand theme (--sc-* set from makers.js), so it reads the same on any page theme. */
 
 .showcase {
@@ -11,7 +11,9 @@
   max-width: 34rem;
   margin-inline: auto;
 }
-body.has-showcase-bar { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom)); }
+@media (max-width: 74.99rem) {
+  body.has-showcase-bar { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom)); }
+}
 
 .showcase-stage {
   overflow: hidden;
@@ -73,6 +75,46 @@ body.has-showcase-bar { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom
 .showcase-timer.is-running i { animation: sc-progress var(--sc-interval, 6s) linear forwards; }
 .showcase.is-paused .showcase-timer i, .showcase.is-hidden-tab .showcase-timer i { animation-play-state: paused; }
 @keyframes sc-progress { to { transform: scaleX(1); } }
+
+@media (min-width: 75rem) {
+  .showcase-slot { position: sticky; top: 1.5rem; align-self: start; }
+  .showcase {
+    --sc-gap: .75rem;
+    /* three cards fit in the window's height, within limits */
+    --sc-card: clamp(11rem, calc((100dvh - 5rem - 2 * var(--sc-gap)) / 3), 14.5rem);
+    position: relative; inset: auto; max-width: none; margin: 0;
+  }
+  .showcase-timer { visibility: hidden; }
+  /* The window onto the stack, exactly --sc-rows cards tall. Its padding is as wide as the gap, so card shadows
+     are not cut off and the next card waits just below the edge. */
+  .showcase-stage {
+    box-sizing: content-box;
+    height: calc(var(--sc-rows) * var(--sc-card) + (var(--sc-rows) - 1) * var(--sc-gap));
+    margin: calc(-1 * var(--sc-gap));
+    padding: var(--sc-gap);
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .showcase-track { grid-auto-rows: var(--sc-card); gap: var(--sc-gap); }
+  .showcase-track.is-sliding { transform: translateY(calc(-1 * (var(--sc-card) + var(--sc-gap)))); transition: transform .8s cubic-bezier(.65, 0, .35, 1); }
+  .sc-slide {
+    grid-area: auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    grid-template-areas: "art art" "brand cta" "head head";
+    gap: .5rem;
+    padding: .65rem .65rem .8rem;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(10, 14, 24, .2), 0 1px 3px rgba(10, 14, 24, .16);
+    opacity: 1; visibility: visible; transform: none; transition: none;
+  }
+  .sc-art { display: block; grid-area: art; align-self: stretch; position: relative; overflow: hidden; border-radius: 10px; }
+  .sc-brand { gap: .45rem; }
+  .sc-name { display: block; overflow: hidden; font-size: .875rem; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; }
+  .sc-logo { width: 1.5rem; height: 1.5rem; border-radius: 6px; }
+  .sc-headline { font-size: .9375rem; line-height: 1.25; }
+  .sc-cta { min-height: 1.9rem; padding: .3rem .7rem; font-size: .75rem; }
+}
 
 /* Scenes, only shown in the rail. Each is drawn at a comfortable size, then scaled down to fill the card's art box. */
 .sc-motif { position: absolute; top: 0; left: 0; width: calc(100% / .7); height: calc(100% / .7); overflow: hidden; background: var(--sc-panel); transform: scale(.7); transform-origin: 0 0; }

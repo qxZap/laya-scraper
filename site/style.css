@@ -50,6 +50,10 @@ body {
   background: var(--bg);
   color: var(--ink);
   font: 400 1.0625rem/1.65 var(--sans);
+  background-image:
+    radial-gradient(60rem 28rem at 15% 0, #12324a99, transparent 70%),
+    radial-gradient(40rem 22rem at 90% 3rem, #14372c80, transparent 70%);
+  background-repeat: no-repeat;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -121,6 +125,16 @@ code {
   padding-inline: 1.25rem;
 }
 .wrap.narrow { max-width: var(--narrow); }
+
+/* The rail of ads sits beside the content from 75rem up, where showcase.css stops
+   being a bar along the bottom and becomes a stack of three cards. The sticky header
+   stays full width above both, so the rail sticks below it rather than under it. */
+.shell { width: 100%; max-width: 92.5rem; margin-inline: auto; }
+.page { min-width: 0; }
+@media (min-width: 75rem) {
+  .shell { display: grid; grid-template-columns: minmax(0, 1fr) 300px; column-gap: 1.5rem; padding-inline: 1.25rem; }
+  .showcase-slot { grid-column: 2; top: 5rem; padding-top: 2.5rem; }
+}
 
 /* ------------------------------------------------------------------ header -- */
 
@@ -203,9 +217,6 @@ code {
 
 .hero {
   padding-block: clamp(2.5rem, 6vw, 4.5rem) 1rem;
-  background:
-    radial-gradient(60rem 28rem at 15% -10%, #12324a99, transparent 70%),
-    radial-gradient(40rem 22rem at 90% 0%, #14372c80, transparent 70%);
 }
 
 .hero-grid {
